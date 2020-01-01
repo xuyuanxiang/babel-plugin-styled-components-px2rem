@@ -28,9 +28,9 @@ or `.babelrc`:
 }
 ```
 
-## Companion with [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components#readme)
+## Composition
 
-### It should put before [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components#readme)
+It should put before [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components#readme)
 
 ```json
 {
