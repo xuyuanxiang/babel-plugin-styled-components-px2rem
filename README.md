@@ -84,7 +84,7 @@ If enabled `transformRuntime` option, all expressions embedded in template strin
 
 Source code:
 
-```typescript
+```javascript
 import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
 
 const Input = styled.input.attrs(props => ({
@@ -106,43 +106,37 @@ const SizeableButton = styled.button(
   font-size: 16px;
 `,
 );
+
 ```
 
 will be transformed to:
 
-```typescript
-import { px2rem as _px2rem } from 'babel-plugin-styled-components-px2rem/lib/px2rem';
+```javascript
+import { px2rem as _px2rem } from "babel-plugin-styled-components-px2rem/lib/px2rem";
 var _OPTIONS = {
   rootValue: 100,
   unitPrecision: 5,
   multiplier: 1,
-  minPixelValue: 2,
+  minPixelValue: 2
 };
 import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
-
 const Input = styled.input.attrs(props => ({
   type: 'password',
   size: props.size || '1em',
-  width: props.width || 100,
-  height: props.height || 48,
+  width: props.width || 100
 }))`
   color: palevioletred;
   font-size: 0.14rem;
   width: ${props => _px2rem(props.width, _OPTIONS)};
-  height: ${props => _px2rem(props.width, _OPTIONS)};
-  margin: ${props => props.size}; /* ignored */
-  padding: ${props => props.size}; /* ignored */
+  margin: ${props => props.size};  /* ignored */
 `;
-
-const SizeableButton = styled.button(
-  props => `
+const SizeableButton = styled.button(props => `
   display: inline;
   width: ${_px2rem(props.width, _OPTIONS)};
-  height: ${_px2rem(props.height, _OPTIONS)};
-  line-height: ${props.lineHeight}; /* ignored */
+  height: ${props.height}; /* ignored */
   font-size: 0.16rem;
-`,
-);
+`);
+
 ```
 
 **Note:** Only expressions that end in `px` will be processed.
