@@ -4,6 +4,8 @@
 
 [Babel](https://babeljs.io/) plugin for convert `px` to `rem` units of [styled-components](https://www.styled-components.com/)
 
+Use [postcss-plugin-px2rem](https://github.com/pigcan/postcss-plugin-px2rem#readme) to process all css text in template strings.
+
 ## Usage
 
 see [example](example)
@@ -62,6 +64,8 @@ const fixedVal = toFixed((pixels * multiplier) / rootValue, unitPrecision);
 
 return `${fixedVal}rem`;
 ```
+
+Remaining options ara consistent with [postcss-plugin-px2rem](https://github.com/pigcan/postcss-plugin-px2rem#readme).
 
 ## TODO
 
