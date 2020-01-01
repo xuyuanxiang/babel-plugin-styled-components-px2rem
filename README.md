@@ -59,7 +59,7 @@ It should put before [babel-plugin-styled-components](https://github.com/styled-
 | minPixelValue | number | false | 2 | Set the minimum pixel value to replace |
 | multiplier | number | false | 1 | The multiplier of input value |
 | tags | string[] | false | ["styled", "css", "createGlobalStyle", "keyframes"] | [styled-components](https://www.styled-components.com/) template literal [tagged](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) |
-| transformRuntime | boolean | false | false | Enable transform all expressions that embedded in template strings |
+| transformRuntime | boolean | false | false | since 1.1.0，enable transformation of all expressions that embedded in template strings |
 
 Simple version of the formula：
 
