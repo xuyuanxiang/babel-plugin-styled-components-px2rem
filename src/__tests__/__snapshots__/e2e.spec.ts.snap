@@ -1,5 +1,71 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`e2e should transform runtime 1`] = `
+"import { px2rem as _px2rem } from \\"babel-plugin-styled-components-px2rem/lib/px2rem\\";
+var _OPTIONS = {
+  rootValue: 100,
+  unitPrecision: 5,
+  multiplier: 1,
+  minPixelValue: 2
+};
+import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
+const mixins = css\`
+  padding: 0 0.16rem;
+  margin: 0.16rem 0.32rem 0.16rem 0.32rem;
+\`;
+const Animation = keyframes\`
+  from {
+    transform: translateX(1rem);
+  }
+
+  to {
+    transform: translateX(-1rem);
+  }
+\`;
+const Input = styled.input.attrs(props => ({
+  type: 'password',
+  size: props.size || '1em'
+}))\`
+  color: palevioletred;
+  font-size: 0.14rem;
+  border: 1px solid palevioletred;
+  border-radius: 0.08rem;
+  margin: \${props => props.size};
+  padding: \${props => props.size};
+\`;
+const GlobalStyle = createGlobalStyle\`
+  html body {
+    font-size: 0.18rem;
+  }
+\`;
+const BlockButton = styled.button\`
+  \${mixins};
+  display: block;
+  width: 100%;
+  height: 0.96rem;
+  line-height: 0.96rem;
+\`;
+const InlineButton = styled.button\`
+  display: inline;
+  width: \${props => _px2rem(props.width, _OPTIONS)};
+  height: \${_px2rem(props.height, _OPTIONS)};
+  line-height: 0.96rem;
+\`;
+const ExtendedButton = styled(InlineButton)\`
+  width: 1.2rem;
+  height: 0.32rem;
+  line-height: 0.32rem;
+  font-size: 0.14rem;
+\`;
+const SizeableButton = styled.button(props => \`
+  display: inline;
+  width: \${_px2rem(props.width, _OPTIONS)};
+  height: \${_px2rem(props.height, _OPTIONS)};
+  line-height: \${_px2rem(props.height, _OPTIONS)};
+  font-size: 0.16rem;
+\`);"
+`;
+
 exports[`e2e should work 1`] = `
 "import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
 const mixins = css\`
@@ -39,10 +105,9 @@ const BlockButton = styled.button\`
   line-height: 0.96rem;
 \`;
 const InlineButton = styled.button\`
-  \${mixins};
   display: inline;
   width: \${props => props.width}px;
-  height: 0.96rem;
+  height: \${props.height}px;
   line-height: 0.96rem;
 \`;
 const ExtendedButton = styled(InlineButton)\`

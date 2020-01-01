@@ -18,7 +18,12 @@ see [example](example)
 
 ```js
 module.exports = {
-  plugins: [['styled-components-px2rem', { rootValue: 100, unitPrecision: 5, minPixelValue: 2, multiplier: 1 }]],
+  plugins: [
+    [
+      'styled-components-px2rem',
+      { rootValue: 100, unitPrecision: 5, minPixelValue: 2, multiplier: 1, transformRuntime: false },
+    ],
+  ],
 };
 ```
 
@@ -27,7 +32,10 @@ or `.babelrc`:
 ```json
 {
   "plugins": [
-    ["styled-components-px2rem", { "rootValue": 100, "unitPrecision": 5, "minPixelValue": 2, "multiplier": 1 }]
+    [
+      "styled-components-px2rem",
+      { "rootValue": 100, "unitPrecision": 5, "minPixelValue": 2, "multiplier": 1, "transformRuntime": false }
+    ]
   ]
 }
 ```
@@ -51,6 +59,7 @@ It should put before [babel-plugin-styled-components](https://github.com/styled-
 | minPixelValue | number | false | 2 | Set the minimum pixel value to replace |
 | multiplier | number | false | 1 | The multiplier of input value |
 | tags | string[] | false | ["styled", "css", "createGlobalStyle", "keyframes"] | [styled-components](https://www.styled-components.com/) template literal [tagged](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) |
+| transformRuntime | boolean | false | false | Enable transform all expressions that embedded in template strings |
 
 Simple version of the formula：
 
@@ -69,44 +78,71 @@ return `${fixedVal}rem`;
 
 Remaining options ara consistent with [postcss-plugin-px2rem](https://github.com/pigcan/postcss-plugin-px2rem#readme).
 
-## TODO
+## Transform Runtime
 
-### Should support embedded expressions in template strings
+If enabled `transformRuntime` option, all expressions embedded in template strings are processed as follows:
+
+Source code:
 
 ```typescript
-import styled from 'styled-components';
+import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
 
-const InlineButton = styled.button`
-  display: inline;
+const Input = styled.input.attrs(props => ({
+  type: 'password',
+  size: props.size || '1em',
+  width: props.width || 100,
+}))`
+  color: palevioletred;
+  font-size: 14px;
   width: ${props => props.width}px;
-  height: 48px;
-  line-height: 48px;
-`;
-// transformed:
-const TransformedInlineButton = styled.button`
-  display: inline;
-  width: ${props => props.width}px; /* not work */
-  height: 0.48rem;
-  line-height: 0.48rem;
+  margin: ${props => props.size};
 `;
 
 const SizeableButton = styled.button(
   props => `
   display: inline;
   width: ${props.width}px;
-  height: ${props.height}px;
-  line-height: ${props.height}px;
+  height: ${props.height};
   font-size: 16px;
 `,
 );
-// transformed:
-const TransformedSizeableButton = styled.button(
+```
+
+will be transformed to:
+
+```typescript
+import { px2rem as _px2rem } from 'babel-plugin-styled-components-px2rem/lib/px2rem';
+var _OPTIONS = {
+  rootValue: 100,
+  unitPrecision: 5,
+  multiplier: 1,
+  minPixelValue: 2,
+};
+import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
+
+const Input = styled.input.attrs(props => ({
+  type: 'password',
+  size: props.size || '1em',
+  width: props.width || 100,
+  height: props.height || 48,
+}))`
+  color: palevioletred;
+  font-size: 0.14rem;
+  width: ${props => _px2rem(props.width, _OPTIONS)};
+  height: ${props => _px2rem(props.width, _OPTIONS)};
+  margin: ${props => props.size}; /* ignored */
+  padding: ${props => props.size}; /* ignored */
+`;
+
+const SizeableButton = styled.button(
   props => `
   display: inline;
-  width: ${props.width}px; /* not work */
-  height: ${props.height}px; /* not work */
-  line-height: ${props.height}px; /* not work */
-  font-size: 0.16rem; 
+  width: ${_px2rem(props.width, _OPTIONS)};
+  height: ${_px2rem(props.height, _OPTIONS)};
+  line-height: ${props.lineHeight}; /* ignored */
+  font-size: 0.16rem;
 `,
 );
 ```
+
+**Note:** Only expressions that end in `px` will be processed.

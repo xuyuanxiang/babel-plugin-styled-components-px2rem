@@ -11,4 +11,12 @@ describe('e2e', () => {
       throw new Error('Should transform code');
     }
   });
+  it('should transform runtime', function() {
+    const result = transformFileSync(join(__dirname, 'case.txt'), { plugins: [[plugin, { transformRuntime: true }]] });
+    if (result && result.code) {
+      expect(result.code).toMatchSnapshot();
+    } else {
+      throw new Error('Should transform code');
+    }
+  });
 });

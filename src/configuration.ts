@@ -11,6 +11,7 @@ export interface IConfiguration {
   ignoreIdentifier: boolean;
   replace: boolean;
   mediaQuery: boolean;
+  transformRuntime: boolean;
 }
 
 class ConfigurationManager {
@@ -27,6 +28,7 @@ class ConfigurationManager {
     ignoreIdentifier: false,
     replace: true,
     mediaQuery: false,
+    transformRuntime: false,
   };
   private _config: IConfiguration = ConfigurationManager.defaultConfiguration;
 

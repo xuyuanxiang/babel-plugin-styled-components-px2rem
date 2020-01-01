@@ -42,10 +42,9 @@ const BlockButton = styled.button`
 `;
 
 const InlineButton = styled.button`
-  ${mixins};
   display: inline;
   width: ${props => props.width}px;
-  height: 96px;
+  height: ${props.height}px;
   line-height: 96px;
 `;
 
