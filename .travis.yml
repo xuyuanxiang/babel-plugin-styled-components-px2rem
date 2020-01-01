@@ -1,0 +1,24 @@
+language: node_js
+version: 1.0
+node_js:
+- node
+branches:
+  only:
+  - master
+notifications:
+  email:
+    recipients:
+    - chaos@xuyuanxiang.cn
+    on_success: never
+    on_failure: always
+before_deploy: npm run build
+deploy:
+  edge: true
+  provider: npm
+  email: chaos@xuyuanxiang.cn
+  api_key:
+    secure: n74m/iw6JeibTNKOTqWOcYMgwGHXwR5gQvxyXjvguYHez6Gko2sQ0LNmAqgC2j0q3jQ5Z7MoOqzk8Ch9b4kbILd+oJhkKPtqJCgN5UIbtjkPfnZ++V8Xj+mBKitD4PaXdwmFqOgeucnMJykgPB0wy4kNpaH4yEdIKmQAYsG+KVIqv1VDa7sOBkcFvQzROgTq91XFJqZEyB1MymqkT/WLMGAy/RlQc49FJUzidXPKmNUAfHJ3x6WiTSXUp6ir+UVCcwwjYqc2BVRAJrqR7EGHiTLYN+QbOfqTYffGVS68kqHpsvaqLFVXC8qhTxaxRxI7QZv/2vPGim59E0KoZqDtJ/FHnwXyhewupJ6cU5pHuWiqHcE/Fx45Y+TcHQfLaOCg9pAhEXiCwXQUA7F7vHMiX71tnBH40Hs0cBQzXtab4wlVHO0QCUHzp+mMxvR88GVS3I82SpNIZxogJ0+i0otNHaRpwNBRBeHrfqZmaauKgrLGp1tIOJD/yAd4DyCASIiyvdYFbefZgqLfiTY0gB63ibV6T+Xb/8SIpwJJAmvMvmZt3xmlXdN5NSqELIL26hcksV35kI6t0A2n7M1dcbCWd++FiL/PgYeqXbPRxpg1FzClemPV4nYcIQAyl8eddmpiRGID6TAbSqlfomIIWu8055VXTLdhLDDiwj9RAEjyyPM=
+  on:
+    tags: true
+    repo: xuyuanxiang/babel-plugin-styled-components-px2rem
+after_success: npm run coveralls

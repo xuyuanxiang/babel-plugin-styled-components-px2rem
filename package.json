@@ -1,0 +1,77 @@
+{
+  "name": "babel-plugin-styled-components-px2rem",
+  "version": "1.0.0",
+  "description": "Babel plugin for convert px to rem units of styled-components",
+  "keywords": [
+    "px2rem",
+    "styled-components",
+    "babel"
+  ],
+  "homepage": "https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem/issues"
+  },
+  "author": "xuyuanxiang <hi@xuyuanxaing.cn>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "directories": {
+    "lib": "lib",
+    "test": "src/__tests__",
+    "example": "example/src"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0",
+    "postcss": "^7.0.0"
+  },
+  "dependencies": {
+    "@babel/helper-plugin-utils": "^7.0.0",
+    "memoizerific": "^1.11.3",
+    "postcss-plugin-px2rem": "^0.8.1",
+    "postcss-scss": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/traverse": "^7.7.4",
+    "@babel/types": "^7.7.4",
+    "@types/jest": "^24.0.25",
+    "@types/node": "^10.13.0",
+    "coveralls": "^3.0.9",
+    "husky": "^3.1.0",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.5.0",
+    "postcss": "^7.0.26",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.1.0",
+    "typescript": "^3.7.4"
+  },
+  "scripts": {
+    "test": "jest --no-cache --coverage",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "build": "tsc -p .",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "watch": "tsc -w -p ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "tslint -c tslint.json --fix",
+      "git add"
+    ]
+  }
+}
