@@ -59,7 +59,6 @@ function transform(template: TemplateLiteral): void {
 
 export default declare((api: ConfigAPI, options?: IConfiguration) => {
   api.assertVersion(7);
-  console.log('custom options:', options);
   configuration.updateConfig(options);
   const visitor: Visitor = {
     TaggedTemplateExpression(path: NodePath<TaggedTemplateExpression>) {
