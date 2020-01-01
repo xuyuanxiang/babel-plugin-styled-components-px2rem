@@ -98,22 +98,7 @@ If enabled `transformRuntime` option, all expressions embedded in template strin
 Source code:
 
 ```javascript
-import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
-
-const mixins = css`
-  padding: 0 16px;
-  margin: 16px 32px 16px 32px;
-`;
-
-const Animation = keyframes`
-  from {
-    transform: translateX(100px);
-  }
-
-  to {
-    transform: translateX(-100px);
-  }
-`;
+import styled, { createGlobalStyle } from 'styled-components';
 
 const Input = styled.input.attrs(props => ({
   type: 'password',
@@ -162,13 +147,6 @@ const InlineButton = styled.button`
   line-height: ${lineHeight}px;
 `;
 
-const ExtendedButton = styled(InlineButton)`
-  width: 120px;
-  height: 32px;
-  line-height: 32px;
-  font-size: 14px;
-`;
-
 const SizeableButton = styled.button(
   props => `
   display: inline;
@@ -190,20 +168,8 @@ var _OPTIONS = {
   multiplier: 1,
   minPixelValue: 2
 };
-import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
-const mixins = css`
-  padding: 0 0.16rem;
-  margin: 0.16rem 0.32rem 0.16rem 0.32rem;
-`;
-const Animation = keyframes`
-  from {
-    transform: translateX(1rem);
-  }
+import styled, { createGlobalStyle } from 'styled-components';
 
-  to {
-    transform: translateX(-1rem);
-  }
-`;
 const Input = styled.input.attrs(props => ({
   type: 'password',
   size: props.size || '1em',
@@ -216,6 +182,7 @@ const Input = styled.input.attrs(props => ({
   width: ${props => _px2rem(props.width, _OPTIONS)};
   padding: ${props => props.size}; /* ignored, only expressions end with px will be processed. */
 `;
+
 const fontSize = 18;
 const GlobalStyle = createGlobalStyle`
   html body {
@@ -227,14 +194,13 @@ function getHeight() {
   const height = 100;
   return height + window.screen.availHeight / 2;
 }
-
 const BlockButton = styled.button`
-  ${mixins};
   display: block;
   width: 100%;
   height: ${_px2rem(getHeight(), _OPTIONS)};
   line-height: 0.96rem;
 `;
+
 const lineHeight = '44';
 const InlineButton = styled.button`
   display: inline;
@@ -248,12 +214,8 @@ const InlineButton = styled.button`
   height: ${_px2rem(props.height, _OPTIONS)};
   line-height: ${_px2rem(lineHeight, _OPTIONS)};
 `;
-const ExtendedButton = styled(InlineButton)`
-  width: 1.2rem;
-  height: 0.32rem;
-  line-height: 0.32rem;
-  font-size: 0.14rem;
-`;
+
+
 const SizeableButton = styled.button(props => `
   display: inline;
   width: ${_px2rem(props.width, _OPTIONS)};
