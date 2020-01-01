@@ -16,7 +16,6 @@ see [example](example)
 module.exports = {
   plugins: [['styled-components-px2rem', { rootValue: 100, unitPrecision: 5, minPixelValue: 2, multiplier: 1 }]],
 };
-
 ```
 
 or `.babelrc`:
@@ -26,6 +25,16 @@ or `.babelrc`:
   "plugins": [
     ["styled-components-px2rem", { "rootValue": 100, "unitPrecision": 5, "minPixelValue": 2, "multiplier": 1 }]
   ]
+}
+```
+
+## Companion with [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components#readme)
+
+### It should put before [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components#readme)
+
+```json
+{
+  "plugins": ["styled-components-px2rem", "styled-components"]
 }
 ```
 
