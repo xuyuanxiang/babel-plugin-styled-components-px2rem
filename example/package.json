@@ -16,7 +16,7 @@
   "devDependencies": {
     "@babel/cli": "^7.7.7",
     "@babel/core": "^7.7.7",
-    "babel-plugin-styled-components-px2rem": "^1.1.0",
+    "babel-plugin-styled-components-px2rem": "^1.1.1",
     "postcss": "^7.0.26"
   },
   "scripts": {

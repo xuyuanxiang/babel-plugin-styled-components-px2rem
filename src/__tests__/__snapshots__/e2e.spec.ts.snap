@@ -24,32 +24,47 @@ const Animation = keyframes\`
 \`;
 const Input = styled.input.attrs(props => ({
   type: 'password',
-  size: props.size || '1em'
+  size: props.size || '1em',
+  width: props.width || 100
 }))\`
   color: palevioletred;
   font-size: 0.14rem;
   border: 1px solid palevioletred;
   border-radius: 0.08rem;
-  margin: \${props => props.size};
+  width: \${props => _px2rem(props.width, _OPTIONS)};
   padding: \${props => props.size};
 \`;
+const fontSize = 18;
 const GlobalStyle = createGlobalStyle\`
   html body {
-    font-size: 0.18rem;
+    font-size: \${_px2rem(fontSize, _OPTIONS)};
   }
 \`;
+
+function getHeight() {
+  const height = 100;
+  return height + window.screen.availHeight / 2;
+}
+
 const BlockButton = styled.button\`
   \${mixins};
   display: block;
   width: 100%;
-  height: 0.96rem;
+  height: \${_px2rem(getHeight(), _OPTIONS)};
   line-height: 0.96rem;
 \`;
+const lineHeight = '44';
 const InlineButton = styled.button\`
   display: inline;
-  width: \${props => _px2rem(props.width, _OPTIONS)};
+  width: \${props => _px2rem(() => {
+  if (props.width) {
+    return props.width;
+  } else {
+    return 0;
+  }
+})};
   height: \${_px2rem(props.height, _OPTIONS)};
-  line-height: 0.96rem;
+  line-height: \${_px2rem(lineHeight, _OPTIONS)};
 \`;
 const ExtendedButton = styled(InlineButton)\`
   width: 1.2rem;
@@ -60,8 +75,7 @@ const ExtendedButton = styled(InlineButton)\`
 const SizeableButton = styled.button(props => \`
   display: inline;
   width: \${_px2rem(props.width, _OPTIONS)};
-  height: \${_px2rem(props.height, _OPTIONS)};
-  line-height: \${_px2rem(props.height, _OPTIONS)};
+  height: \${props.height};
   font-size: 0.16rem;
 \`);"
 `;
@@ -83,32 +97,47 @@ const Animation = keyframes\`
 \`;
 const Input = styled.input.attrs(props => ({
   type: 'password',
-  size: props.size || '1em'
+  size: props.size || '1em',
+  width: props.width || 100
 }))\`
   color: palevioletred;
   font-size: 0.14rem;
   border: 1px solid palevioletred;
   border-radius: 0.08rem;
-  margin: \${props => props.size};
+  width: \${props => props.width}px;
   padding: \${props => props.size};
 \`;
+const fontSize = 18;
 const GlobalStyle = createGlobalStyle\`
   html body {
-    font-size: 0.18rem;
+    font-size: \${fontSize}px;
   }
 \`;
+
+function getHeight() {
+  const height = 100;
+  return height + window.screen.availHeight / 2;
+}
+
 const BlockButton = styled.button\`
   \${mixins};
   display: block;
   width: 100%;
-  height: 0.96rem;
+  height: \${getHeight()}px;
   line-height: 0.96rem;
 \`;
+const lineHeight = '44';
 const InlineButton = styled.button\`
   display: inline;
-  width: \${props => props.width}px;
+  width: \${props => {
+  if (props.width) {
+    return props.width;
+  } else {
+    return 0;
+  }
+}}px;
   height: \${props.height}px;
-  line-height: 0.96rem;
+  line-height: \${lineHeight}px;
 \`;
 const ExtendedButton = styled(InlineButton)\`
   width: 1.2rem;
@@ -119,8 +148,7 @@ const ExtendedButton = styled(InlineButton)\`
 const SizeableButton = styled.button(props => \`
   display: inline;
   width: \${props.width}px;
-  height: \${props.height}px;
-  line-height: \${props.height}px;
+  height: \${props.height};
   font-size: 0.16rem;
 \`);"
 `;

@@ -10,6 +10,8 @@ TypeScript transformer with similar functionality：[typescript-styled-component
 
 ## Requirement
 
+You need to install the following `peerDependencies` of babel-plugin-styled-components-px2rem into your project at the same time:
+
 ```json
 {
   "peerDependencies": {

@@ -26,6 +26,8 @@ import {
   importSpecifier,
   variableDeclaration,
   variableDeclarator,
+  isBlock,
+  arrowFunctionExpression,
 } from '@babel/types';
 import configuration, { IConfiguration } from './configuration';
 import { replace } from './replace';
@@ -86,18 +88,21 @@ function transform(template: TemplateLiteral): void {
         if (next && isTemplateElement(next)) {
           const text = next.value?.raw || next.value?.cooked;
           if (text && /^px/.test(text)) {
-            if (isArrowFunctionExpression(expression) && isExpression(expression.body)) {
-              expression.body = callExpression(_px2rem, [
-                expression.body,
-                _options,
-              ]);
+            if (isArrowFunctionExpression(expression)) {
+              if (isBlock(expression.body)) {
+                expression.body = callExpression(_px2rem, [
+                  arrowFunctionExpression(
+                    [],
+                    expression.body
+                  ),
+                ]);
+              } else {
+                expression.body = callExpression(_px2rem, [expression.body, _options]);
+              }
             } else {
               const idx = template.expressions.findIndex(it => it === expression);
               if (idx !== -1) {
-                template.expressions[idx] = callExpression(_px2rem, [
-                  expression,
-                  _options
-                ]);
+                template.expressions[idx] = callExpression(_px2rem, [expression, _options]);
               }
             }
             if (next.value && next.value.raw) {

@@ -13,5 +13,6 @@ describe('replace()', () => {
     expect(replace('\nhtml body {\n  font-size: 16px;\n}\n')).toBe('\nhtml body {\n  font-size: 0.16rem;\n}\n');
 
     expect(replace('\n  &:last-child {\n    border: none')).toBe('\n  &:last-child {\n    border: none');
+    expect(replace('\n  /* test */ body {')).toBe('\n  /* test */ body {');
   });
 });
