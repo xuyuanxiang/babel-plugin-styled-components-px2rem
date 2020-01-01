@@ -8,6 +8,17 @@ Use [postcss-plugin-px2rem](https://github.com/pigcan/postcss-plugin-px2rem#read
 
 TypeScript transformer with similar functionality：[typescript-styled-components-px2rem](https://github.com/xuyuanxiang/typescript-styled-components-px2rem).
 
+## Requirement
+
+```json
+{
+  "peerDependencies": {
+    "@babel/core": "^7.0.0",
+    "postcss": "^7.0.0"
+  }
+}
+```
+
 ## Usage
 
 see [example](example)
@@ -106,37 +117,37 @@ const SizeableButton = styled.button(
   font-size: 16px;
 `,
 );
-
 ```
 
 will be transformed to:
 
 ```javascript
-import { px2rem as _px2rem } from "babel-plugin-styled-components-px2rem/lib/px2rem";
+import { px2rem as _px2rem } from 'babel-plugin-styled-components-px2rem/lib/px2rem';
 var _OPTIONS = {
   rootValue: 100,
   unitPrecision: 5,
   multiplier: 1,
-  minPixelValue: 2
+  minPixelValue: 2,
 };
 import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
 const Input = styled.input.attrs(props => ({
   type: 'password',
   size: props.size || '1em',
-  width: props.width || 100
+  width: props.width || 100,
 }))`
   color: palevioletred;
   font-size: 0.14rem;
   width: ${props => _px2rem(props.width, _OPTIONS)};
-  margin: ${props => props.size};  /* ignored */
+  margin: ${props => props.size}; /* ignored */
 `;
-const SizeableButton = styled.button(props => `
+const SizeableButton = styled.button(
+  props => `
   display: inline;
   width: ${_px2rem(props.width, _OPTIONS)};
   height: ${props.height}; /* ignored */
   font-size: 0.16rem;
-`);
-
+`,
+);
 ```
 
 **Note:** Only expressions that end in `px` will be processed.
