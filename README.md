@@ -161,13 +161,6 @@ const SizeableButton = styled.button(
 will be transformed to:
 
 ```javascript
-import { px2rem as _px2rem } from "babel-plugin-styled-components-px2rem/lib/px2rem";
-var _OPTIONS = {
-  rootValue: 100,
-  unitPrecision: 5,
-  multiplier: 1,
-  minPixelValue: 2
-};
 import styled, { createGlobalStyle } from 'styled-components';
 
 const Input = styled.input.attrs(props => ({
@@ -179,14 +172,14 @@ const Input = styled.input.attrs(props => ({
   font-size: 0.14rem;
   border: 1px solid palevioletred;
   border-radius: 0.08rem;
-  width: ${props => _px2rem(props.width, _OPTIONS)};
+  width: ${props => _px2rem(props.width)};
   padding: ${props => props.size}; /* ignored, only expressions end with px will be processed. */
 `;
 
 const fontSize = 18;
 const GlobalStyle = createGlobalStyle`
   html body {
-    font-size: ${_px2rem(fontSize, _OPTIONS)};
+    font-size: ${_px2rem(fontSize)};
   }
 `;
 
@@ -197,7 +190,7 @@ function getHeight() {
 const BlockButton = styled.button`
   display: block;
   width: 100%;
-  height: ${_px2rem(getHeight(), _OPTIONS)};
+  height: ${_px2rem(getHeight())};
   line-height: 0.96rem;
 `;
 
@@ -211,18 +204,30 @@ const InlineButton = styled.button`
     return 0;
   }
 })};
-  height: ${_px2rem(props.height, _OPTIONS)};
-  line-height: ${_px2rem(lineHeight, _OPTIONS)};
+  height: ${_px2rem(props.height)};
+  line-height: ${_px2rem(lineHeight)};
 `;
 
 
 const SizeableButton = styled.button(props => `
   display: inline;
-  width: ${_px2rem(props.width, _OPTIONS)};
+  width: ${_px2rem(props.width)};
   height: ${props.height}; /* ignored, only expressions end with px will be processed. */
   font-size: 0.16rem;
 `);
 
+function _px2rem(input) {
+  if (typeof input === 'function') return _px2rem(input());
+  var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;
+  var pixels = Number.isNaN(value) ? 0 : value;
+
+  if (pixels < 2) {
+    return `${pixels}px`;
+  }
+
+  var mul = Math.pow(10, 5 + 1);
+  return `${Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul}rem`;
+}
 ```
 
 **Note:** Only expressions that end in `px` will be processed.

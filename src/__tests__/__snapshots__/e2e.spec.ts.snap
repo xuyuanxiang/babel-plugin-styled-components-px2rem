@@ -1,14 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`e2e should transform runtime 1`] = `
-"import { px2rem as _px2rem } from \\"babel-plugin-styled-components-px2rem/lib/px2rem\\";
-var _OPTIONS = {
-  rootValue: 100,
-  unitPrecision: 5,
-  multiplier: 1,
-  minPixelValue: 2
-};
-import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
+"import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
 const mixins = css\`
   padding: 0 0.16rem;
   margin: 0.16rem 0.32rem 0.16rem 0.32rem;
@@ -31,13 +24,13 @@ const Input = styled.input.attrs(props => ({
   font-size: 0.14rem;
   border: 1px solid palevioletred;
   border-radius: 0.08rem;
-  width: \${props => _px2rem(props.width, _OPTIONS)};
+  width: \${props => _px2rem(props.width)};
   padding: \${props => props.size};
 \`;
 const fontSize = 18;
 const GlobalStyle = createGlobalStyle\`
   html body {
-    font-size: \${_px2rem(fontSize, _OPTIONS)};
+    font-size: \${_px2rem(fontSize)};
   }
 \`;
 
@@ -50,7 +43,7 @@ const BlockButton = styled.button\`
   \${mixins};
   display: block;
   width: 100%;
-  height: \${_px2rem(getHeight(), _OPTIONS)};
+  height: \${_px2rem(getHeight())};
   line-height: 0.96rem;
 \`;
 const lineHeight = '44';
@@ -63,8 +56,8 @@ const InlineButton = styled.button\`
     return 0;
   }
 })};
-  height: \${_px2rem(props.height, _OPTIONS)};
-  line-height: \${_px2rem(lineHeight, _OPTIONS)};
+  height: \${_px2rem(props.height)};
+  line-height: \${_px2rem(lineHeight)};
 \`;
 const ExtendedButton = styled(InlineButton)\`
   width: 1.2rem;
@@ -74,10 +67,23 @@ const ExtendedButton = styled(InlineButton)\`
 \`;
 const SizeableButton = styled.button(props => \`
   display: inline;
-  width: \${_px2rem(props.width, _OPTIONS)};
+  width: \${_px2rem(props.width)};
   height: \${props.height};
   font-size: 0.16rem;
-\`);"
+\`);
+
+function _px2rem(input) {
+  if (typeof input === 'function') return _px2rem(input());
+  var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;
+  var pixels = Number.isNaN(value) ? 0 : value;
+
+  if (pixels < 2) {
+    return \`\${pixels}px\`;
+  }
+
+  var mul = Math.pow(10, 5 + 1);
+  return \`\${Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul}rem\`;
+}"
 `;
 
 exports[`e2e should work 1`] = `

@@ -16,24 +16,17 @@ import {
   isTemplateElement,
   callExpression,
   identifier,
-  isExpression,
-  objectExpression,
-  objectProperty,
   numericLiteral,
   Program,
-  importDeclaration,
-  stringLiteral,
-  importSpecifier,
-  variableDeclaration,
-  variableDeclarator,
   isBlock,
   arrowFunctionExpression,
 } from '@babel/types';
+import templateBuild from '@babel/template';
 import configuration, { IConfiguration } from './configuration';
 import { replace } from './replace';
+import { px2rem } from './template';
 
 let _px2rem: Identifier | undefined;
-let _options: Identifier | undefined;
 
 function isStyledTagged(tagged: TaggedTemplateExpression) {
   const tag = tagged.tag;
@@ -83,26 +76,21 @@ function transform(template: TemplateLiteral): void {
       const expression = expressions[i];
       if (isTemplateElement(expression)) {
         transformTemplateElement(expression);
-      } else if (_px2rem && _options) {
+      } else if (_px2rem) {
         const next = expressions[i + 1];
         if (next && isTemplateElement(next)) {
           const text = next.value?.raw || next.value?.cooked;
           if (text && /^px/.test(text)) {
             if (isArrowFunctionExpression(expression)) {
               if (isBlock(expression.body)) {
-                expression.body = callExpression(_px2rem, [
-                  arrowFunctionExpression(
-                    [],
-                    expression.body
-                  ),
-                ]);
+                expression.body = callExpression(_px2rem, [arrowFunctionExpression([], expression.body)]);
               } else {
-                expression.body = callExpression(_px2rem, [expression.body, _options]);
+                expression.body = callExpression(_px2rem, [expression.body]);
               }
             } else {
               const idx = template.expressions.findIndex(it => it === expression);
               if (idx !== -1) {
-                template.expressions[idx] = callExpression(_px2rem, [expression, _options]);
+                template.expressions[idx] = callExpression(_px2rem, [expression]);
               }
             }
             if (next.value && next.value.raw) {
@@ -135,31 +123,19 @@ export default declare((api: ConfigAPI, options?: IConfiguration) => {
     Program: {
       exit() {
         _px2rem = undefined;
-        _options = undefined;
       },
       enter(programPath: NodePath<Program>) {
         if (configuration.config.transformRuntime) {
           _px2rem = programPath.scope.generateUidIdentifier('px2rem');
-          _options = programPath.scope.generateUidIdentifier('OPTIONS');
-          programPath.node.body.unshift(
-            variableDeclaration('var', [
-              variableDeclarator(
-                _options,
-                objectExpression([
-                  objectProperty(identifier('rootValue'), numericLiteral(configuration.config.rootValue)),
-                  objectProperty(identifier('unitPrecision'), numericLiteral(configuration.config.unitPrecision)),
-                  objectProperty(identifier('multiplier'), numericLiteral(configuration.config.multiplier)),
-                  objectProperty(identifier('minPixelValue'), numericLiteral(configuration.config.minPixelValue)),
-                ]),
-              ),
-            ]),
-          );
-          programPath.node.body.unshift(
-            importDeclaration(
-              [importSpecifier(_px2rem, identifier('px2rem'))],
-              stringLiteral('babel-plugin-styled-components-px2rem/lib/px2rem'),
-            ),
-          );
+          const template = templateBuild.statement(px2rem);
+          programPath.node.body.push(template({
+            input: identifier('input'),
+            px2rem: _px2rem,
+            rootValue: numericLiteral(configuration.config.rootValue),
+            unitPrecision: numericLiteral(configuration.config.unitPrecision),
+            multiplier: numericLiteral(configuration.config.multiplier),
+            minPixelValue: numericLiteral(configuration.config.minPixelValue),
+          }));
         }
         programPath.traverse({
           TaggedTemplateExpression(path: NodePath<TaggedTemplateExpression>) {
