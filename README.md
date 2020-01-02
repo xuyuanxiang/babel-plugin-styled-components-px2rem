@@ -25,6 +25,8 @@ You need to install the following `peerDependencies` of babel-plugin-styled-comp
 
 see [example](example)
 
+The use of React and styled-components [test cases](example/src/__tests__/index.spec.jsx).
+
 ## Configuration
 
 `babel.config.js`:
