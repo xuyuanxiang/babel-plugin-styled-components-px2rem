@@ -162,7 +162,6 @@ will be transformed to:
 
 ```javascript
 import styled, { createGlobalStyle } from 'styled-components';
-
 const Input = styled.input.attrs(props => ({
   type: 'password',
   size: props.size || '1em',
@@ -175,7 +174,6 @@ const Input = styled.input.attrs(props => ({
   width: ${props => _px2rem(props.width)};
   padding: ${props => props.size}; /* ignored, only expressions end with px will be processed. */
 `;
-
 const fontSize = 18;
 const GlobalStyle = createGlobalStyle`
   html body {
@@ -187,13 +185,14 @@ function getHeight() {
   const height = 100;
   return height + window.screen.availHeight / 2;
 }
+
 const BlockButton = styled.button`
+  ${mixins};
   display: block;
   width: 100%;
   height: ${_px2rem(getHeight())};
   line-height: 0.96rem;
 `;
-
 const lineHeight = '44';
 const InlineButton = styled.button`
   display: inline;
@@ -207,8 +206,6 @@ const InlineButton = styled.button`
   height: ${_px2rem(props.height)};
   line-height: ${_px2rem(lineHeight)};
 `;
-
-
 const SizeableButton = styled.button(props => `
   display: inline;
   width: ${_px2rem(props.width)};
@@ -228,6 +225,7 @@ function _px2rem(input) {
   var mul = Math.pow(10, 5 + 1);
   return `${Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul}rem`;
 }
+
 ```
 
 **Note:** Only expressions that end in `px` will be processed.
