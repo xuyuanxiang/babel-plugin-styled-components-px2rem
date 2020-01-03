@@ -53,12 +53,12 @@ export const MixinsButton = styled.button`
 const lineHeight = '44';
 export const LineHeightButton = styled.button`
   width: ${props => {
-  if (props.width) {
-    return props.width;
-  } else {
-    return 0;
-  }
-}}px;
+    if (props.width) {
+      return props.width;
+    } else {
+      return 0;
+    }
+  }}px;
   line-height: ${lineHeight}px;
 `;
 
@@ -69,7 +69,7 @@ export const StyledButton = styled.button`
 `;
 
 export const ExtendButton = styled(StyledButton)`
-  padding: ${props => props.padding}px;
+  padding: ${props => (typeof props.padding === 'number' ? props.padding : 16)}px;
 `;
 
 export const SizeableButton = styled.button(
@@ -80,3 +80,8 @@ export const SizeableButton = styled.button(
   font-size: 16px;
 `,
 );
+
+export const ThemeConsumer = styled.div`
+  font-size: ${props => props.theme.fontSize}px;
+  color: ${props => props.theme.color}
+`;

@@ -1,7 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-dom/test-utils';
-import { StyledButton, SizeableButton, LineHeightButton, MixinsButton, GlobalStyle, ExtendButton, Input } from '../index';
+import { ThemeProvider } from 'styled-components';
+import {
+  StyledButton,
+  SizeableButton,
+  LineHeightButton,
+  MixinsButton,
+  GlobalStyle,
+  ExtendButton,
+  Input,
+  ThemeConsumer,
+} from '../index';
 
 const div = document.createElement('div');
 
@@ -16,10 +26,7 @@ afterEach(() => {
 
 it('should render <Input/>', function() {
   TestUtils.act(() => {
-    ReactDOM.render(
-      <Input id="inputId" width={320} />,
-      div,
-    );
+    ReactDOM.render(<Input id="inputId" width={320} />, div);
   });
   const input = div.querySelector('input#inputId');
   if (input) {
@@ -33,7 +40,7 @@ it('should render <Input/>', function() {
   } else {
     throw new Error('Input should be render');
   }
-})
+});
 
 it('should render <GlobalStyle/>', function() {
   TestUtils.act(() => {
@@ -126,5 +133,24 @@ it('should render <SizeableButton/>', function() {
     expect(style.width).toBe('2rem');
   } else {
     throw new Error('SizeableButton should be render');
+  }
+});
+
+it('should render <ThemeConsumer/>', function() {
+  TestUtils.act(() => {
+    ReactDOM.render(
+      <ThemeProvider theme={{ fontSize: 18, color: '#000000' }}>
+        <ThemeConsumer id="consumer" />
+      </ThemeProvider>,
+      div,
+    );
+  });
+  const consumer = div.querySelector('div#consumer');
+  if (consumer) {
+    const style = getComputedStyle(consumer);
+    expect(style.fontSize).toBe('0.18rem');
+    expect(style.color).toBe('rgb(0, 0, 0)');
+  } else {
+    throw new Error('ThemeConsumer should be render');
   }
 });
