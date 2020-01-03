@@ -33,8 +33,8 @@ function isStyledTagged(tagged: TaggedTemplateExpression) {
   const tag = tagged.tag;
   if (isIdentifier(tag)) {
     return isStyled(tag);
-  } else if (isMemberExpression(tag) && isIdentifier(tag.object)) {
-    return isStyled(tag.object);
+  } else if (isMemberExpression(tag)) {
+    return isStyledMember(tag);
   } else if (isCallExpression(tag)) {
     if (isIdentifier(tag.callee)) {
       return isStyled(tag.callee);

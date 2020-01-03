@@ -14,7 +14,7 @@ export interface IConfiguration {
   transformRuntime: boolean;
 }
 
-class ConfigurationManager {
+export class ConfigurationManager {
   private static readonly defaultConfiguration: IConfiguration = {
     rootValue: 100,
     unitPrecision: 5,

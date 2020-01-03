@@ -1,9 +1,5 @@
+import React from 'react';
 import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
-
-const mixins = css`
-  padding: 0 16px;
-  margin: 16px 32px 16px 32px;
-`;
 
 const Animation = keyframes`
   from {
@@ -15,9 +11,9 @@ const Animation = keyframes`
   }
 `;
 
-const Input = styled.input.attrs(props => ({
+export const ArrowFunctionExpression = styled.input.attrs(props => ({
   type: 'password',
-  size: props.size || '1em',
+  size: props.size || '16px',
   width: props.width || 100,
 }))`
   color: palevioletred;
@@ -29,28 +25,33 @@ const Input = styled.input.attrs(props => ({
 `;
 
 const fontSize = 18;
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   html body {
     font-size: ${fontSize}px;
+    width: 1024px;
+    min-height: 800px;
   }
 `;
 
 function getHeight() {
   const height = 100;
 
-  return height + window.screen.availHeight / 2;
+  return height / 2;
 }
-const BlockButton = styled.button`
+const mixins = css`
+  padding: 0 16px;
+  margin: 16px 32px 16px 32px;
+`;
+export const MixinsButton = styled.button`
   ${mixins};
   display: block;
   width: 100%;
   height: ${getHeight()}px;
-  line-height: 96px;
+  line-height: 32px;
 `;
 
 const lineHeight = '44';
-const InlineButton = styled.button`
-  display: inline;
+export const ArrowFunctionExpressionWithBlockBody = styled.button`
   width: ${props => {
     if (props.width) {
       return props.width;
@@ -58,18 +59,20 @@ const InlineButton = styled.button`
       return 0;
     }
   }}px;
-  height: ${props.height}px;
   line-height: ${lineHeight}px;
 `;
 
-const ExtendedButton = styled(InlineButton)`
+export const StyledButton = styled.button`
   width: 120px;
   height: 32px;
-  line-height: 32px;
   font-size: 14px;
 `;
 
-const SizeableButton = styled.button(
+export const ExtendStyledButton = styled(StyledButton)`
+  padding: ${props => props.padding}px;
+`;
+
+export const PropertyAccessExpression = styled.button(
   props => `
   display: inline;
   width: ${props.width}px;
@@ -77,3 +80,24 @@ const SizeableButton = styled.button(
   font-size: 16px;
 `,
 );
+
+export const ThemeConsumer = styled.div`
+  font-size: ${props => props.theme.fontSize}px;
+  color: ${props => props.theme.color};
+`;
+
+export const ConditionalExpression = function({ fontSize } = {}) {
+  const StyledButton = styled.button`
+    font-size: ${typeof fontSize === 'number' ? fontSize : props => props.theme.fontSize}px;
+  `;
+
+  return React.createElement(StyledButton);
+};
+
+export const Foo = (function() {})`
+foo
+`;
+
+const Bar  = [''][0]`
+ bar
+`;
