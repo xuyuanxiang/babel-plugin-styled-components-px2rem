@@ -1,24 +1,23 @@
 language: node_js
 version: 1.0
 node_js:
-  - node
+- node
 branches:
   only:
-    - master
-    - "/^\\d{1}\\.\\d{1,2}.\\d{1,2}$/"
+  - master
+  - "/^\\d{1}\\.\\d{1,2}.\\d{1,2}$/"
 notifications:
   email:
     recipients:
-      - chaos@xuyuanxiang.cn
+    - chaos@xuyuanxiang.cn
     on_success: never
     on_failure: always
 before_deploy: npm run build
 deploy:
-  edge: true
   provider: npm
   email: chaos@xuyuanxiang.cn
   api_key:
-    secure: n74m/iw6JeibTNKOTqWOcYMgwGHXwR5gQvxyXjvguYHez6Gko2sQ0LNmAqgC2j0q3jQ5Z7MoOqzk8Ch9b4kbILd+oJhkKPtqJCgN5UIbtjkPfnZ++V8Xj+mBKitD4PaXdwmFqOgeucnMJykgPB0wy4kNpaH4yEdIKmQAYsG+KVIqv1VDa7sOBkcFvQzROgTq91XFJqZEyB1MymqkT/WLMGAy/RlQc49FJUzidXPKmNUAfHJ3x6WiTSXUp6ir+UVCcwwjYqc2BVRAJrqR7EGHiTLYN+QbOfqTYffGVS68kqHpsvaqLFVXC8qhTxaxRxI7QZv/2vPGim59E0KoZqDtJ/FHnwXyhewupJ6cU5pHuWiqHcE/Fx45Y+TcHQfLaOCg9pAhEXiCwXQUA7F7vHMiX71tnBH40Hs0cBQzXtab4wlVHO0QCUHzp+mMxvR88GVS3I82SpNIZxogJ0+i0otNHaRpwNBRBeHrfqZmaauKgrLGp1tIOJD/yAd4DyCASIiyvdYFbefZgqLfiTY0gB63ibV6T+Xb/8SIpwJJAmvMvmZt3xmlXdN5NSqELIL26hcksV35kI6t0A2n7M1dcbCWd++FiL/PgYeqXbPRxpg1FzClemPV4nYcIQAyl8eddmpiRGID6TAbSqlfomIIWu8055VXTLdhLDDiwj9RAEjyyPM=
+    secure: YGSVRAjzhRW3+4o6leVQlwVfYHaEF5gg5IaDgRa8ulx0bIdB2v0I3Z6VNYwnZfcn/l6InK3tze0xhRYQhYQVtNNuzpreSkwhuaLGhkVS64oEwExM/QKb2Li6/PI25CYYE6p0zOS8ioQSNCPAPveyxe48JEyExRA5q+IYdjuQ4VUacDvw5CYaGw8UeWpbtqL8Kx9An97+q1QxqVXgThPL+OYqOrF8CLzqr9P4YFFKxHTAedZBGN5HgV6SwBvCajF0/sdL2THolzqo0/9BhuvHonUj5CxRNcxGSg12V2w5sUIj0kfcnJaOA5G5uss1Za0yQA4X7Bj9Vqp2UNX69+Q9gcbvFs00sspo9ojzt7zmvwCxhkU2pagBEZfncRaXaFyoZUhxwq+z34YdjfuPEUT1iDkVgD+H+NPXKn7bP8ziypphKQWUA4ghiCkBWpyScWp9nm3GuzE9F5ybHO14gS9WtgullyCKXDTbq4gNf2+8+8q+tSicixUh32KnET+w0VrgXOA1N9r+kltQ6GY93XmCEd0w4auNNDPMsoQfCFq+bDQdMKg4zGLf2blaQCEkve5GvZc6uCFsuij16Q9igyG7aATrMNcdX+3whlCvrS7J75rdVy42TzL7bXF9TivV2xy6cQzm9fY9T06TSS2WxQV473v341Y2oscoJc43zlm1+os=
   on:
     tags: true
     repo: xuyuanxiang/babel-plugin-styled-components-px2rem
