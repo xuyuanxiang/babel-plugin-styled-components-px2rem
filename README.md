@@ -99,12 +99,23 @@ If enabled `transformRuntime` option, all expressions embedded in template strin
 
 Source code:
 
-```javascript
-import styled, { createGlobalStyle } from 'styled-components';
+```jsx harmony
+import React from 'react';
+import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
 
-const Input = styled.input.attrs(props => ({
+const Animation = keyframes`
+  from {
+    transform: translateX(100px);
+  }
+
+  to {
+    transform: translateX(-100px);
+  }
+`;
+
+export const ArrowFunctionExpression = styled.input.attrs(props => ({
   type: 'password',
-  size: props.size || '1em',
+  size: props.size || '16px',
   width: props.width || 100,
 }))`
   color: palevioletred;
@@ -116,28 +127,33 @@ const Input = styled.input.attrs(props => ({
 `;
 
 const fontSize = 18;
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   html body {
     font-size: ${fontSize}px;
+    width: 1024px;
+    min-height: 800px;
   }
 `;
 
 function getHeight() {
   const height = 100;
 
-  return height + window.screen.availHeight / 2;
+  return height / 2;
 }
-const BlockButton = styled.button`
+const mixins = css`
+  padding: 0 16px;
+  margin: 16px 32px 16px 32px;
+`;
+export const MixinsButton = styled.button`
   ${mixins};
   display: block;
   width: 100%;
   height: ${getHeight()}px;
-  line-height: 96px;
+  line-height: 32px;
 `;
 
 const lineHeight = '44';
-const InlineButton = styled.button`
-  display: inline;
+export const ArrowFunctionExpressionWithBlockBody = styled.button`
   width: ${props => {
     if (props.width) {
       return props.width;
@@ -145,11 +161,20 @@ const InlineButton = styled.button`
       return 0;
     }
   }}px;
-  height: ${props.height}px;
   line-height: ${lineHeight}px;
 `;
 
-const SizeableButton = styled.button(
+export const StyledButton = styled.button`
+  width: 120px;
+  height: 32px;
+  font-size: 14px;
+`;
+
+export const ExtendStyledButton = styled(StyledButton)`
+  padding: ${props => props.padding}px;
+`;
+
+export const PropertyAccessExpression = styled.button(
   props => `
   display: inline;
   width: ${props.width}px;
@@ -158,15 +183,38 @@ const SizeableButton = styled.button(
 `,
 );
 
+export const ThemeConsumer = styled.div`
+  font-size: ${props => props.theme.fontSize}px;
+  color: ${props => props.theme.color};
+`;
+
+export const ConditionalExpression = function({ fontSize } = {}) {
+  const StyledButton = styled.button`
+    font-size: ${typeof fontSize === 'number' ? fontSize : props => props?.theme.fontSize}px;
+  `;
+
+  return <StyledButton />;
+};
+
 ```
 
 will be transformed to:
 
 ```javascript
-import styled, { createGlobalStyle } from 'styled-components';
-const Input = styled.input.attrs(props => ({
+import React from 'react';
+import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
+const Animation = keyframes`
+  from {
+    transform: translateX(1rem);
+  }
+
+  to {
+    transform: translateX(-1rem);
+  }
+`;
+export const ArrowFunctionExpression = styled.input.attrs(props => ({
   type: 'password',
-  size: props.size || '1em',
+  size: props.size || '16px',
   width: props.width || 100
 }))`
   color: palevioletred;
@@ -174,30 +222,35 @@ const Input = styled.input.attrs(props => ({
   border: 1px solid palevioletred;
   border-radius: 0.08rem;
   width: ${props => _px2rem(props.width)};
-  padding: ${props => props.size}; /* ignored, only expressions end with px will be processed. */
+  padding: ${props => props.size};
 `;
 const fontSize = 18;
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   html body {
     font-size: ${_px2rem(fontSize)};
+    width: 10.24rem;
+    min-height: 8rem;
   }
 `;
 
 function getHeight() {
   const height = 100;
-  return height + window.screen.availHeight / 2;
+  return height / 2;
 }
 
-const BlockButton = styled.button`
+const mixins = css`
+  padding: 0 0.16rem;
+  margin: 0.16rem 0.32rem 0.16rem 0.32rem;
+`;
+export const MixinsButton = styled.button`
   ${mixins};
   display: block;
   width: 100%;
   height: ${_px2rem(getHeight())};
-  line-height: 0.96rem;
+  line-height: 0.32rem;
 `;
 const lineHeight = '44';
-const InlineButton = styled.button`
-  display: inline;
+export const ArrowFunctionExpressionWithBlockBody = styled.button`
   width: ${props => _px2rem(() => {
   if (props.width) {
     return props.width;
@@ -205,15 +258,34 @@ const InlineButton = styled.button`
     return 0;
   }
 })};
-  height: ${_px2rem(props.height)};
   line-height: ${_px2rem(lineHeight)};
 `;
-const SizeableButton = styled.button(props => `
+export const StyledButton = styled.button`
+  width: 1.2rem;
+  height: 0.32rem;
+  font-size: 0.14rem;
+`;
+export const ExtendStyledButton = styled(StyledButton)`
+  padding: ${props => _px2rem(props.padding)};
+`;
+export const PropertyAccessExpression = styled.button(props => `
   display: inline;
   width: ${_px2rem(props.width)};
-  height: ${props.height}; /* ignored, only expressions end with px will be processed. */
+  height: ${props.height};
   font-size: 0.16rem;
 `);
+export const ThemeConsumer = styled.div`
+  font-size: ${props => _px2rem(props.theme.fontSize)};
+  color: ${props => props.theme.color};
+`;
+export const ConditionalExpression = function ({
+  fontSize
+} = {}) {
+  const StyledButton = styled.button`
+    font-size: ${typeof fontSize === 'number' ? _px2rem(fontSize) : props => _px2rem(props === null || props === void 0 ? void 0 : props.theme.fontSize)};
+  `;
+  return React.createElement(StyledButton, null);
+};
 
 function _px2rem(input) {
   if (typeof input === 'function') return _px2rem(input());
@@ -231,3 +303,95 @@ function _px2rem(input) {
 ```
 
 **Note:** Only expressions that end in `px` will be processed.
+
+
+### Current Supported Expression
+
+#### PropertyAccessExpression
+
+```javascript
+import styled from 'styled-components';
+
+export const PropertyAccessExpression = styled.button(
+  props => `
+  display: inline;
+  width: ${props.width}px;
+  height: ${props.height};
+  font-size: 16px;
+`,
+);
+```
+
+#### ArrowFunctionExpression
+
+```javascript
+import styled from 'styled-components';
+
+export const ArrowFunctionExpression = styled.input.attrs(props => ({
+  type: 'password',
+  size: props.size || '16px',
+  width: props.width || 100,
+}))`
+  color: palevioletred;
+  font-size: 14px;
+  border: 1px solid palevioletred;
+  border-radius: 8px;
+  width: ${props => props.width}px;
+  padding: ${props => props.size};
+`;
+const lineHeight = '44';
+export const ArrowFunctionExpressionWithBlockBody = styled.button`
+  width: ${props => {
+    if (props.width) {
+      return props.width;
+    } else {
+      return 0;
+    }
+  }}px;
+  line-height: ${lineHeight}px;
+`;
+```
+
+#### ConditionalExpression
+
+```jsx harmony
+import React from 'react';
+import styled from 'styled-components';
+
+export const ConditionalExpression = function({ fontSize } = {}) {
+  const StyledButton = styled.button`
+    font-size: ${typeof fontSize === 'number' ? fontSize : props => props?.theme.fontSize}px;
+  `;
+
+  return <StyledButton />;
+};
+```
+
+#### Other Expressions
+
+Identifier, CallExpression...
+
+```javascript
+import styled, { createGlobalStyle } from 'styled-components';
+
+const fontSize = 18;
+export const GlobalStyle = createGlobalStyle`
+  html body {
+    font-size: ${fontSize}px;
+    width: 1024px;
+    min-height: 800px;
+  }
+`;
+
+function getHeight() {
+  const height = 100;
+
+  return height / 2;
+}
+export const MixinsButton = styled.button`
+  display: block;
+  width: 100%;
+  height: ${getHeight()}px;
+  line-height: 32px;
+`;
+```

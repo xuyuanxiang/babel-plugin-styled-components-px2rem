@@ -1,11 +1,6 @@
 import React from 'react';
 import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
 
-const mixins = css`
-  padding: 0 16px;
-  margin: 16px 32px 16px 32px;
-`;
-
 const Animation = keyframes`
   from {
     transform: translateX(100px);
@@ -43,6 +38,10 @@ function getHeight() {
 
   return height / 2;
 }
+const mixins = css`
+  padding: 0 16px;
+  margin: 16px 32px 16px 32px;
+`;
 export const MixinsButton = styled.button`
   ${mixins};
   display: block;
