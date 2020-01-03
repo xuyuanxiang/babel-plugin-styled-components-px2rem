@@ -20,6 +20,7 @@ import {
   Program,
   isBlock,
   arrowFunctionExpression,
+  isConditionalExpression,
 } from '@babel/types';
 import templateBuild from '@babel/template';
 import configuration, { IConfiguration } from './configuration';
@@ -66,6 +67,23 @@ function transformTemplateElement(it: TemplateElement): void {
   }
 }
 
+function transformTemplateExpression(expression: Expression, px2rem: Identifier): Expression {
+  if (isArrowFunctionExpression(expression)) {
+    if (isBlock(expression.body)) {
+      expression.body = callExpression(px2rem, [arrowFunctionExpression([], expression.body)]);
+    } else {
+      expression.body = callExpression(px2rem, [expression.body]);
+    }
+  } else if (isConditionalExpression(expression)) {
+    expression.alternate = transformTemplateExpression(expression.alternate, px2rem);
+    expression.consequent = transformTemplateExpression(expression.consequent, px2rem);
+  } else {
+    return callExpression(px2rem, [expression]);
+  }
+
+  return expression;
+}
+
 function transform(template: TemplateLiteral): void {
   if (!template.expressions || template.expressions.length === 0) {
     template.quasis.forEach(transformTemplateElement);
@@ -81,23 +99,15 @@ function transform(template: TemplateLiteral): void {
         if (next && isTemplateElement(next)) {
           const text = next.value?.raw || next.value?.cooked;
           if (text && /^px/.test(text)) {
-            if (isArrowFunctionExpression(expression)) {
-              if (isBlock(expression.body)) {
-                expression.body = callExpression(_px2rem, [arrowFunctionExpression([], expression.body)]);
-              } else {
-                expression.body = callExpression(_px2rem, [expression.body]);
+            const idx = template.expressions.findIndex(it => it === expression);
+            if (idx !== -1) {
+              template.expressions[idx] = transformTemplateExpression(expression, _px2rem);
+              if (next.value && next.value.raw) {
+                next.value.raw = next.value.raw.replace(/^px/, '');
               }
-            } else {
-              const idx = template.expressions.findIndex(it => it === expression);
-              if (idx !== -1) {
-                template.expressions[idx] = callExpression(_px2rem, [expression]);
+              if (next.value && next.value.cooked) {
+                next.value.cooked = next.value.cooked.replace(/^px/, '');
               }
-            }
-            if (next.value && next.value.raw) {
-              next.value.raw = next.value.raw.replace(/^px/, '');
-            }
-            if (next.value && next.value.cooked) {
-              next.value.cooked = next.value.cooked.replace(/^px/, '');
             }
           }
         }
@@ -128,14 +138,16 @@ export default declare((api: ConfigAPI, options?: IConfiguration) => {
         if (configuration.config.transformRuntime) {
           _px2rem = programPath.scope.generateUidIdentifier('px2rem');
           const template = templateBuild.statement(px2rem);
-          programPath.node.body.push(template({
-            input: identifier('input'),
-            px2rem: _px2rem,
-            rootValue: numericLiteral(configuration.config.rootValue),
-            unitPrecision: numericLiteral(configuration.config.unitPrecision),
-            multiplier: numericLiteral(configuration.config.multiplier),
-            minPixelValue: numericLiteral(configuration.config.minPixelValue),
-          }));
+          programPath.node.body.push(
+            template({
+              input: identifier('input'),
+              px2rem: _px2rem,
+              rootValue: numericLiteral(configuration.config.rootValue),
+              unitPrecision: numericLiteral(configuration.config.unitPrecision),
+              multiplier: numericLiteral(configuration.config.multiplier),
+              minPixelValue: numericLiteral(configuration.config.minPixelValue),
+            }),
+          );
         }
         programPath.traverse({
           TaggedTemplateExpression(path: NodePath<TaggedTemplateExpression>) {

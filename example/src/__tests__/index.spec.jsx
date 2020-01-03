@@ -4,13 +4,14 @@ import TestUtils from 'react-dom/test-utils';
 import { ThemeProvider } from 'styled-components';
 import {
   StyledButton,
-  SizeableButton,
-  LineHeightButton,
+  PropertyAccessExpression,
+  ArrowFunctionExpressionWithBlockBody,
   MixinsButton,
   GlobalStyle,
-  ExtendButton,
-  Input,
+  ExtendStyledButton,
+  ArrowFunctionExpression,
   ThemeConsumer,
+  ConditionalExpression,
 } from '../index';
 
 const div = document.createElement('div');
@@ -24,9 +25,45 @@ afterEach(() => {
   document.body.removeChild(div);
 });
 
-it('should render <Input/>', function() {
+it("should transform <ConditionalExpression/> with ThemeProvider's fontSize", function() {
   TestUtils.act(() => {
-    ReactDOM.render(<Input id="inputId" width={320} />, div);
+    ReactDOM.render(
+      <ThemeProvider theme={{ fontSize: 48 }}>
+        <ConditionalExpression />
+      </ThemeProvider>,
+      div,
+    );
+  });
+  const button = div.querySelector('button');
+  if (button) {
+    const style = getComputedStyle(button);
+    expect(style.fontSize).toBe('0.48rem');
+  } else {
+    throw new Error('ConditionalExpression should be render');
+  }
+});
+
+it('should transform <ConditionalExpression/> with self fontSize', function() {
+  TestUtils.act(() => {
+    ReactDOM.render(
+      <ThemeProvider theme={{ fontSize: 48 }}>
+        <ConditionalExpression fontSize={24} />
+      </ThemeProvider>,
+      div,
+    );
+  });
+  const button = div.querySelector('button');
+  if (button) {
+    const style = getComputedStyle(button);
+    expect(style.fontSize).toBe('0.24rem');
+  } else {
+    throw new Error('ConditionalExpression should be render');
+  }
+});
+
+it('should transform <ArrowFunctionExpression/>', function() {
+  TestUtils.act(() => {
+    ReactDOM.render(<ArrowFunctionExpression id="inputId" width={320} />, div);
   });
   const input = div.querySelector('input#inputId');
   if (input) {
@@ -38,11 +75,11 @@ it('should render <Input/>', function() {
     expect(style.width).toBe('3.2rem');
     expect(style.padding).toBe('16px');
   } else {
-    throw new Error('Input should be render');
+    throw new Error('ArrowFunctionExpression should be render');
   }
 });
 
-it('should render <GlobalStyle/>', function() {
+it('should transform <GlobalStyle/>', function() {
   TestUtils.act(() => {
     ReactDOM.render(
       <>
@@ -57,7 +94,7 @@ it('should render <GlobalStyle/>', function() {
   expect(style.minHeight).toBe('8rem');
 });
 
-it('should render <MixinsButton/>', function() {
+it('should transform <MixinsButton/>', function() {
   TestUtils.act(() => {
     ReactDOM.render(<MixinsButton id="btnId" />, div);
   });
@@ -75,7 +112,7 @@ it('should render <MixinsButton/>', function() {
   }
 });
 
-it('should render <StyledButton/>', function() {
+it('should transform <StyledButton/>', function() {
   TestUtils.act(() => {
     ReactDOM.render(<StyledButton id="btnId" />, div);
   });
@@ -90,9 +127,9 @@ it('should render <StyledButton/>', function() {
   }
 });
 
-it('should render <ExtendButton/>', function() {
+it('should transform <ExtendStyledButton/>', function() {
   TestUtils.act(() => {
-    ReactDOM.render(<ExtendButton id="btnId" padding={64} />, div);
+    ReactDOM.render(<ExtendStyledButton id="btnId" padding={64} />, div);
   });
   const button = div.querySelector('button#btnId');
   if (button) {
@@ -102,13 +139,13 @@ it('should render <ExtendButton/>', function() {
     expect(style.width).toBe('1.2rem');
     expect(style.padding).toBe('0.64rem');
   } else {
-    throw new Error('ExtendButton should be render');
+    throw new Error('ExtendStyledButton should be render');
   }
 });
 
-it('should render <LineHeightButton/>', function() {
+it('should transform <ArrowFunctionExpressionWithBlockBody/>', function() {
   TestUtils.act(() => {
-    ReactDOM.render(<LineHeightButton id="btnId" width="160" />, div);
+    ReactDOM.render(<ArrowFunctionExpressionWithBlockBody id="btnId" width="160" />, div);
   });
   const button = div.querySelector('button#btnId');
   if (button) {
@@ -116,13 +153,13 @@ it('should render <LineHeightButton/>', function() {
     expect(style.lineHeight).toBe('0.44rem');
     expect(style.width).toBe('1.6rem');
   } else {
-    throw new Error('LineHeightButton should be render');
+    throw new Error('ArrowFunctionExpressionWithBlockBody should be render');
   }
 });
 
-it('should render <SizeableButton/>', function() {
+it('should transform <PropertyAccessExpression/>', function() {
   TestUtils.act(() => {
-    ReactDOM.render(<SizeableButton id="btnId" width={200} height="44px" />, div);
+    ReactDOM.render(<PropertyAccessExpression id="btnId" width={200} height="44px" />, div);
   });
   const button = div.querySelector('button#btnId');
   if (button) {
@@ -132,11 +169,11 @@ it('should render <SizeableButton/>', function() {
     expect(style.height).toBe('44px');
     expect(style.width).toBe('2rem');
   } else {
-    throw new Error('SizeableButton should be render');
+    throw new Error('PropertyAccessExpression should be render');
   }
 });
 
-it('should render <ThemeConsumer/>', function() {
+it('should transform <ThemeConsumer/>', function() {
   TestUtils.act(() => {
     ReactDOM.render(
       <ThemeProvider theme={{ fontSize: 18, color: '#000000' }}>
