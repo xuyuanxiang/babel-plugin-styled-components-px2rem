@@ -21,6 +21,17 @@ import {
   isBlock,
   arrowFunctionExpression,
   isConditionalExpression,
+  StringLiteral,
+  BinaryExpression,
+  NumericLiteral,
+  isBinaryExpression,
+  isStringLiteral,
+  LogicalExpression,
+  isLogicalExpression,
+  isNumericLiteral,
+  isFunctionExpression,
+  restElement,
+  spreadElement,
 } from '@babel/types';
 import templateBuild from '@babel/template';
 import configuration, { IConfiguration } from './configuration';
@@ -58,56 +69,72 @@ function isStyled(id: Identifier): boolean {
   return configuration.config.tags.indexOf(id.name) >= 0;
 }
 
-function transformTemplateElement(it: TemplateElement): void {
-  if (it.value && it.value.raw) {
-    it.value.raw = replace(it.value.raw);
-  }
-  if (it.value && it.value.cooked) {
-    it.value.cooked = replace(it.value.cooked);
-  }
+function isPureExpression(
+  node: any,
+): node is
+  | Identifier
+  | CallExpression
+  | BinaryExpression
+  | StringLiteral
+  | NumericLiteral
+  | MemberExpression
+  | LogicalExpression {
+  return (
+    isIdentifier(node) ||
+    isCallExpression(node) ||
+    isBinaryExpression(node) ||
+    isStringLiteral(node) ||
+    isNumericLiteral(node) ||
+    isMemberExpression(node) ||
+    isLogicalExpression(node)
+  );
 }
 
 function transformTemplateExpression(expression: Expression, px2rem: Identifier): Expression {
   if (isArrowFunctionExpression(expression)) {
     if (isBlock(expression.body)) {
       expression.body = callExpression(px2rem, [arrowFunctionExpression([], expression.body)]);
-    } else {
+    } else if (isPureExpression(expression.body)) {
       expression.body = callExpression(px2rem, [expression.body]);
+    } else {
+      expression.body = transformTemplateExpression(expression.body, px2rem);
     }
   } else if (isConditionalExpression(expression)) {
     expression.alternate = transformTemplateExpression(expression.alternate, px2rem);
     expression.consequent = transformTemplateExpression(expression.consequent, px2rem);
-  } else {
+  } else if (isPureExpression(expression)) {
     return callExpression(px2rem, [expression]);
+  } else if (isFunctionExpression(expression)) {
+    return arrowFunctionExpression(
+      [restElement(identifier('args'))],
+      callExpression(px2rem, [expression, spreadElement(identifier('args'))]),
+    );
+  } else {
+    throw new TypeError('Incomprehensible expression type: ' + expression.type);
   }
 
   return expression;
 }
 
 function transform(template: TemplateLiteral): void {
-  if (!template.expressions || template.expressions.length === 0) {
-    template.quasis.forEach(transformTemplateElement);
-  } else {
+  if (_px2rem) {
     const expressions: (Expression | TemplateElement)[] = [...template.expressions, ...template.quasis];
     expressions.sort((it1, it2) => (it1.start || 0) - (it2.start || 0));
     for (let i = 0; i < expressions.length; i++) {
       const expression = expressions[i];
-      if (isTemplateElement(expression)) {
-        transformTemplateElement(expression);
-      } else if (_px2rem) {
-        const next = expressions[i + 1];
-        if (next && isTemplateElement(next)) {
-          const text = next.value?.raw || next.value?.cooked;
-          if (text && /^px/.test(text)) {
-            const idx = template.expressions.findIndex(it => it === expression);
-            if (idx !== -1) {
-              template.expressions[idx] = transformTemplateExpression(expression, _px2rem);
-              if (next.value && next.value.raw) {
-                next.value.raw = next.value.raw.replace(/^px/, '');
-              }
-              if (next.value && next.value.cooked) {
-                next.value.cooked = next.value.cooked.replace(/^px/, '');
-              }
+      if (isTemplateElement(expression)) continue;
+      const next = expressions[i + 1];
+      if (next && isTemplateElement(next)) {
+        const text = next.value?.raw || next.value?.cooked;
+        if (text && /^px/.test(text)) {
+          const idx = template.expressions.findIndex(it => it === expression);
+          if (idx !== -1) {
+            template.expressions[idx] = transformTemplateExpression(expression, _px2rem);
+            if (next.value && next.value.raw) {
+              next.value.raw = next.value.raw.replace(/^px/, '');
+            }
+            if (next.value && next.value.cooked) {
+              next.value.cooked = next.value.cooked.replace(/^px/, '');
             }
           }
         }
@@ -121,13 +148,29 @@ export default declare((api: ConfigAPI, options?: IConfiguration) => {
   configuration.updateConfig(options);
 
   const templateVisitor: Visitor = {
-    TemplateLiteral: {
-      exit(templateLiteralPath: NodePath<TemplateLiteral>) {},
-      enter(templateLiteralPath: NodePath<TemplateLiteral>) {
-        transform(templateLiteralPath.node);
-      },
+    TemplateElement(path: NodePath<TemplateElement>) {
+      const it = path.node;
+      if (it.value && it.value.raw) {
+        it.value.raw = replace(it.value.raw);
+      }
+      if (it.value && it.value.cooked) {
+        it.value.cooked = replace(it.value.cooked);
+      }
+    },
+    StringLiteral(path: NodePath<StringLiteral>) {
+      path.node.value = replace(path.node.value);
     },
   };
+
+  if (configuration.config.transformRuntime) {
+    templateVisitor.TemplateLiteral = (path: NodePath<TemplateLiteral>) => {
+      try {
+        transform(path.node);
+      } catch (e) {
+        throw path.buildCodeFrameError(e.message);
+      }
+    };
+  }
 
   const visitor: Visitor = {
     Program: {

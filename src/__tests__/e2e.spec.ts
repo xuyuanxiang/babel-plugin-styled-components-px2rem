@@ -1,10 +1,13 @@
-import { transformFileSync } from '@babel/core';
+import { transformFileSync, transformSync } from '@babel/core';
 import { join } from 'path';
 import plugin from '../';
 
 describe('e2e', () => {
   it('should work', function() {
-    const result = transformFileSync(join(__dirname, 'case.txt'), { plugins: [plugin] });
+    const result = transformFileSync(join(__dirname, 'case.txt'), {
+      plugins: [plugin],
+      presets: ['@babel/preset-react'],
+    });
     if (result && result.code) {
       expect(result.code).toMatchSnapshot();
     } else {
@@ -12,11 +15,26 @@ describe('e2e', () => {
     }
   });
   it('should transform runtime', function() {
-    const result = transformFileSync(join(__dirname, 'case.txt'), { plugins: [[plugin, { transformRuntime: true }]] });
+    const result = transformFileSync(join(__dirname, 'case.txt'), {
+      presets: ['@babel/preset-react'],
+      plugins: [[plugin, { transformRuntime: true }]],
+    });
     if (result && result.code) {
       expect(result.code).toMatchSnapshot();
     } else {
       throw new Error('Should transform code');
     }
+  });
+  it('should throw Error', function() {
+    expect(() => transformSync(
+      `export const ClassExpression = styled.button\`
+  height: \${class Component {
+      }}px;
+\`;
+`,
+      {
+        plugins: [[plugin, { transformRuntime: true }]],
+      },
+    )).toThrowError(SyntaxError)
   });
 });

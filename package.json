@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-styled-components-px2rem",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Babel plugin for convert px to rem units of styled-components",
   "keywords": [
     "px2rem",
@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
     "@babel/traverse": "^7.7.4",
     "@babel/types": "^7.7.4",
     "@types/jest": "^24.0.25",

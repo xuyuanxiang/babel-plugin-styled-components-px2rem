@@ -1,6 +1,6 @@
 export const px2rem = `
-function %%px2rem%%(%%input%%) {
-    if (typeof %%input%% === 'function') return %%px2rem%%(%%input%%());
+function %%px2rem%%(%%input%%, ...args) {
+    if (typeof %%input%% === 'function') return %%px2rem%%(%%input%%(...args));
     var value = typeof %%input%% === 'string' ? parseFloat(%%input%%) : typeof %%input%% === 'number' ? %%input%% : 0;
     var pixels = Number.isNaN(value) ? 0 : value;
     if (pixels < %%minPixelValue%%) {

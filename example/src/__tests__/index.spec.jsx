@@ -4,14 +4,17 @@ import TestUtils from 'react-dom/test-utils';
 import { ThemeProvider } from 'styled-components';
 import {
   StyledButton,
-  PropertyAccessExpression,
-  ArrowFunctionExpressionWithBlockBody,
-  MixinsButton,
+  MemberExpression,
+  FunctionExpression,
+  ArrowFunctionWithBlockBody,
+  ArrowFunctionWithBinaryBody,
+  ArrowFunctionWithConditionalBody,
   GlobalStyle,
   ExtendStyledButton,
-  ArrowFunctionExpression,
+  ArrowFunction,
   ThemeConsumer,
   ConditionalExpression,
+  BinaryAndLogicExpression,
 } from '../index';
 
 const div = document.createElement('div');
@@ -61,9 +64,9 @@ it('should transform <ConditionalExpression/> with self fontSize', function() {
   }
 });
 
-it('should transform <ArrowFunctionExpression/>', function() {
+it('should transform <ArrowFunction/>', function() {
   TestUtils.act(() => {
-    ReactDOM.render(<ArrowFunctionExpression id="inputId" width={320} />, div);
+    ReactDOM.render(<ArrowFunction id="inputId" width={320} />, div);
   });
   const input = div.querySelector('input#inputId');
   if (input) {
@@ -74,8 +77,24 @@ it('should transform <ArrowFunctionExpression/>', function() {
     expect(style.borderRadius).toBe('0.08rem');
     expect(style.width).toBe('3.2rem');
     expect(style.padding).toBe('16px');
+    expect(style.margin).toBe('0.32rem');
+    expect(style.lineHeight).toBe('0.44rem');
+    expect(style.height).toBe('0.44rem');
   } else {
-    throw new Error('ArrowFunctionExpression should be render');
+    throw new Error('ArrowFunction should be render');
+  }
+});
+
+it('should transform <FunctionExpression/>', function() {
+  TestUtils.act(() => {
+    ReactDOM.render(<FunctionExpression id="btnId" height={120} />, div);
+  });
+  const button = div.querySelector('button#btnId');
+  if (button) {
+    const style = getComputedStyle(button);
+    expect(style.height).toBe('1.2rem');
+  } else {
+    throw new Error('FunctionExpression should be render');
   }
 });
 
@@ -89,27 +108,11 @@ it('should transform <GlobalStyle/>', function() {
     );
   });
   const style = getComputedStyle(document.body);
+  expect(style.padding).toBe('0px 0.16rem');
+  expect(style.margin).toBe('0.16rem 0.32rem 0.16rem 0.32rem');
   expect(style.fontSize).toBe('0.18rem');
   expect(style.width).toBe('10.24rem');
-  expect(style.minHeight).toBe('8rem');
-});
-
-it('should transform <MixinsButton/>', function() {
-  TestUtils.act(() => {
-    ReactDOM.render(<MixinsButton id="btnId" />, div);
-  });
-  const button = div.querySelector('button#btnId');
-  if (button) {
-    const style = getComputedStyle(button);
-    expect(style.display).toBe('block');
-    expect(style.padding).toBe('0px 0.16rem');
-    expect(style.margin).toBe('0.16rem 0.32rem 0.16rem 0.32rem');
-    expect(style.lineHeight).toBe('0.32rem');
-    expect(style.width).toBe('100%');
-    expect(style.height).toBe('0.5rem');
-  } else {
-    throw new Error('MixinsButton should be render');
-  }
+  expect(style.height).toBe('0.5rem');
 });
 
 it('should transform <StyledButton/>', function() {
@@ -143,23 +146,49 @@ it('should transform <ExtendStyledButton/>', function() {
   }
 });
 
-it('should transform <ArrowFunctionExpressionWithBlockBody/>', function() {
+it('should transform <ArrowFunctionWithBlockBody/>', function() {
   TestUtils.act(() => {
-    ReactDOM.render(<ArrowFunctionExpressionWithBlockBody id="btnId" width="160" />, div);
+    ReactDOM.render(<ArrowFunctionWithBlockBody id="btnId" width="160" />, div);
   });
   const button = div.querySelector('button#btnId');
   if (button) {
     const style = getComputedStyle(button);
-    expect(style.lineHeight).toBe('0.44rem');
+    expect(style.height).toBe('2rem');
     expect(style.width).toBe('1.6rem');
   } else {
-    throw new Error('ArrowFunctionExpressionWithBlockBody should be render');
+    throw new Error('ArrowFunctionWithBlockBody should be render');
+  }
+});
+
+it('should transform <ArrowFunctionWithBinaryBody/>', function() {
+  TestUtils.act(() => {
+    ReactDOM.render(<ArrowFunctionWithBinaryBody id="btnId" height={120} />, div);
+  });
+  const button = div.querySelector('button#btnId');
+  if (button) {
+    const style = getComputedStyle(button);
+    expect(style.height).toBe('1.2rem');
+  } else {
+    throw new Error('ArrowFunctionWithBinaryBody should be render');
+  }
+});
+
+it('should transform <ArrowFunctionWithConditionalBody/>', function() {
+  TestUtils.act(() => {
+    ReactDOM.render(<ArrowFunctionWithConditionalBody id="btnId" />, div);
+  });
+  const button = div.querySelector('button#btnId');
+  if (button) {
+    const style = getComputedStyle(button);
+    expect(style.height).toBe('1rem');
+  } else {
+    throw new Error('ArrowFunctionWithConditionalBody should be render');
   }
 });
 
 it('should transform <PropertyAccessExpression/>', function() {
   TestUtils.act(() => {
-    ReactDOM.render(<PropertyAccessExpression id="btnId" width={200} height="44px" />, div);
+    ReactDOM.render(<MemberExpression id="btnId" width={200} height="44px" />, div);
   });
   const button = div.querySelector('button#btnId');
   if (button) {
@@ -189,5 +218,21 @@ it('should transform <ThemeConsumer/>', function() {
     expect(style.color).toBe('rgb(0, 0, 0)');
   } else {
     throw new Error('ThemeConsumer should be render');
+  }
+});
+
+it('should transform <BinaryExpression/>', function() {
+  TestUtils.act(() => {
+    ReactDOM.render(<BinaryAndLogicExpression id="btnId" />, div);
+  });
+  const consumer = div.querySelector('button#btnId');
+  if (consumer) {
+    const style = getComputedStyle(consumer);
+    expect(style.width).toBe('2rem');
+    expect(style.height).toBe('1rem');
+    expect(style.padding).toBe('0.9rem');
+    expect(style.lineHeight).toBe('0.18rem');
+  } else {
+    throw new Error('BinaryExpression should be render');
   }
 });
