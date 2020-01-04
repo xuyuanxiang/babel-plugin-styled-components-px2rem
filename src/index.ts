@@ -110,15 +110,13 @@ function transformTemplateExpression(expression: Expression, px2rem: Identifier)
   } else if (isConditionalExpression(expression)) {
     expression.alternate = transformTemplateExpression(expression.alternate, px2rem);
     expression.consequent = transformTemplateExpression(expression.consequent, px2rem);
-  } else if (isPureExpression(expression)) {
-    return callExpression(px2rem, [expression]);
   } else if (isFunctionExpression(expression)) {
     return arrowFunctionExpression(
       [restElement(identifier('args'))],
       callExpression(px2rem, [expression, spreadElement(identifier('args'))]),
     );
   } else {
-    throw new TypeError('Incomprehensible expression type: ' + expression.type);
+    return callExpression(px2rem, [expression]);
   }
 
   return expression;
@@ -157,16 +155,30 @@ export default declare((api: ConfigAPI, options?: IConfiguration) => {
 
   const templateVisitor: Visitor = {
     TemplateElement(path: NodePath<TemplateElement>) {
-      const it = path.node;
-      if (it.value && it.value.raw) {
-        it.value.raw = replace(it.value.raw);
-      }
-      if (it.value && it.value.cooked) {
-        it.value.cooked = replace(it.value.cooked);
+      try {
+        const it = path.node;
+        if (it.value && it.value.raw) {
+          it.value.raw = replace(it.value.raw);
+        }
+        if (it.value && it.value.cooked) {
+          it.value.cooked = replace(it.value.cooked);
+        }
+      } catch (e) {
+        throw path.buildCodeFrameError(
+          'Whoops! An unexpected Error occurred, please visit: https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem/issues  to commit a issue.',
+          e,
+        );
       }
     },
     StringLiteral(path: NodePath<StringLiteral>) {
-      path.node.value = replace(path.node.value);
+      try {
+        path.node.value = replace(path.node.value);
+      } catch (e) {
+        throw path.buildCodeFrameError(
+          'Whoops! An unexpected Error occurred, please visit: https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem/issues  to commit a issue.',
+          e,
+        );
+      }
     },
   };
 
@@ -175,7 +187,10 @@ export default declare((api: ConfigAPI, options?: IConfiguration) => {
       try {
         transform(path.node);
       } catch (e) {
-        throw path.buildCodeFrameError(e.message);
+        throw path.buildCodeFrameError(
+          'Whoops! An unexpected Error occurred, please visit: https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem/issues  to commit a issue.',
+          e,
+        );
       }
     };
   }

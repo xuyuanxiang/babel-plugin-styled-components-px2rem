@@ -25,16 +25,4 @@ describe('e2e', () => {
       throw new Error('Should transform code');
     }
   });
-  it('should throw Error', function() {
-    expect(() => transformSync(
-      `export const ClassExpression = styled.button\`
-  height: \${class Component {
-      }}px;
-\`;
-`,
-      {
-        plugins: [[plugin, { transformRuntime: true }]],
-      },
-    )).toThrowError(SyntaxError)
-  });
 });
