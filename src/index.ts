@@ -32,6 +32,10 @@ import {
   isFunctionExpression,
   restElement,
   spreadElement,
+  OptionalMemberExpression,
+  isOptionalMemberExpression,
+  OptionalCallExpression,
+  isOptionalCallExpression,
 } from '@babel/types';
 import templateBuild from '@babel/template';
 import configuration, { IConfiguration } from './configuration';
@@ -74,18 +78,22 @@ function isPureExpression(
 ): node is
   | Identifier
   | CallExpression
+  | OptionalCallExpression
   | BinaryExpression
   | StringLiteral
   | NumericLiteral
   | MemberExpression
+  | OptionalMemberExpression
   | LogicalExpression {
   return (
     isIdentifier(node) ||
     isCallExpression(node) ||
+    isOptionalCallExpression(node) ||
     isBinaryExpression(node) ||
     isStringLiteral(node) ||
     isNumericLiteral(node) ||
     isMemberExpression(node) ||
+    isOptionalMemberExpression(node) ||
     isLogicalExpression(node)
   );
 }
