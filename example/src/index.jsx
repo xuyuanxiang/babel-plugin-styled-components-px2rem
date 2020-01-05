@@ -13,8 +13,8 @@ const Animation = keyframes`
 
 export const FunctionExpression = styled.button`
   height: ${function(props) {
-  return props.height;
-}}px;
+    return props.height;
+  }}px;
 `;
 
 const height = '44';
@@ -35,19 +35,19 @@ export const ArrowFunction = styled.input.attrs(props => ({
 `;
 export const ArrowFunctionWithBlockBody = styled.button`
   width: ${props => {
-  if (props.width) {
-    return props.width;
-  } else {
-    return 0;
-  }
-}}px; /* Block Body */
+    if (props.width) {
+      return props.width;
+    } else {
+      return 0;
+    }
+  }}px; /* Block Body */
 
   ${props => (props.disabled ? 'height: 400px' : 'height: 200px')};
 `;
 export const ArrowFunctionWithBinaryBody = styled.button`
   ${props =>
-  props.disabled &&
-  `
+    props.disabled &&
+    `
     width: 200px;
     font-size: 14px;
   `};
@@ -128,10 +128,27 @@ function calc() {
 }
 export const BinaryAndLogicExpression = styled.button`
   ${condition ||
-`
+    `
     width: 200px;
   `};
   height: ${condition || 100}px;
   padding: ${40 + 50}px;
   line-height: ${calc() - 2}px;
 `;
+
+export const ConditaionalExpression = styled.div(
+  props => `
+  flex: 0 0 30%;
+  padding-left: 15px;
+  ${
+    props.icon
+      ? `
+     background-position: 9px center;
+     background-repeat: no-repeat;
+     background-size: 9px 15px;
+     padding-left: 25px;
+  `
+      : ''
+  }
+`,
+);

@@ -36,6 +36,9 @@ import {
   isOptionalMemberExpression,
   OptionalCallExpression,
   isOptionalCallExpression,
+  SpreadElement,
+  JSXNamespacedName,
+  ArgumentPlaceholder,
 } from '@babel/types';
 import templateBuild from '@babel/template';
 import configuration, { IConfiguration } from './configuration';
@@ -43,6 +46,7 @@ import { replace } from './replace';
 import { px2rem } from './template';
 
 let _px2rem: Identifier | undefined;
+let _used = false;
 
 function isStyledTagged(tagged: TaggedTemplateExpression) {
   const tag = tagged.tag;
@@ -65,6 +69,18 @@ function isStyledMember(member: MemberExpression): boolean {
     return isStyled(member.object);
   } else if (isMemberExpression(member.object)) {
     return isStyledMember(member.object);
+  }
+  return false;
+}
+
+function isStyledFunction(call: CallExpression): boolean {
+  const callee = call.callee;
+  if (isMemberExpression(callee)) {
+    return isStyledMember(callee);
+  } else if (isIdentifier(callee)) {
+    return isStyled(callee);
+  } else if (isCallExpression(callee)) {
+    return isStyledFunction(callee);
   }
   return false;
 }
@@ -98,12 +114,20 @@ function isPureExpression(
   );
 }
 
+function createCallPx2rem(
+  px2rem: Identifier,
+  ...expressions: (Expression | SpreadElement | JSXNamespacedName | ArgumentPlaceholder)[]
+): CallExpression {
+  _used = true;
+  return callExpression(px2rem, expressions);
+}
+
 function transformTemplateExpression(expression: Expression, px2rem: Identifier): Expression {
   if (isArrowFunctionExpression(expression)) {
     if (isBlock(expression.body)) {
-      expression.body = callExpression(px2rem, [arrowFunctionExpression([], expression.body)]);
+      expression.body = createCallPx2rem(px2rem, arrowFunctionExpression([], expression.body));
     } else if (isPureExpression(expression.body)) {
-      expression.body = callExpression(px2rem, [expression.body]);
+      expression.body = createCallPx2rem(px2rem, expression.body);
     } else {
       expression.body = transformTemplateExpression(expression.body, px2rem);
     }
@@ -113,10 +137,10 @@ function transformTemplateExpression(expression: Expression, px2rem: Identifier)
   } else if (isFunctionExpression(expression)) {
     return arrowFunctionExpression(
       [restElement(identifier('args'))],
-      callExpression(px2rem, [expression, spreadElement(identifier('args'))]),
+      createCallPx2rem(px2rem, expression, spreadElement(identifier('args'))),
     );
   } else {
-    return callExpression(px2rem, [expression]);
+    return createCallPx2rem(px2rem, expression);
   }
 
   return expression;
@@ -197,12 +221,8 @@ export default declare((api: ConfigAPI, options?: IConfiguration) => {
 
   const visitor: Visitor = {
     Program: {
-      exit() {
-        _px2rem = undefined;
-      },
-      enter(programPath: NodePath<Program>) {
-        if (configuration.config.transformRuntime) {
-          _px2rem = programPath.scope.generateUidIdentifier('px2rem');
+      exit(programPath: NodePath<Program>) {
+        if (_used && _px2rem) {
           const template = templateBuild.statement(px2rem);
           programPath.node.body.push(
             template({
@@ -215,6 +235,14 @@ export default declare((api: ConfigAPI, options?: IConfiguration) => {
             }),
           );
         }
+      },
+      enter(programPath: NodePath<Program>) {
+        if (configuration.config.transformRuntime) {
+          _px2rem = programPath.scope.generateUidIdentifier('px2rem');
+        } else {
+          _px2rem = undefined;
+        }
+        _used = false;
         programPath.traverse({
           TaggedTemplateExpression(path: NodePath<TaggedTemplateExpression>) {
             if (isStyledTagged(path.node)) {
@@ -222,11 +250,7 @@ export default declare((api: ConfigAPI, options?: IConfiguration) => {
             }
           },
           CallExpression(path: NodePath<CallExpression>) {
-            if (
-              isMemberExpression(path.node.callee) &&
-              isIdentifier(path.node.callee.object) &&
-              isStyled(path.node.callee.object)
-            ) {
+            if (isStyledFunction(path.node)) {
               path.traverse(templateVisitor);
             }
           },

@@ -130,6 +130,25 @@ export const BinaryAndLogicExpression = styled.button\`
   padding: \${_px2rem(40 + 50)};
   line-height: \${_px2rem(calc() - 2)};
 \`;
+const Item = styled.div\`
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 0.16rem;
+  font-weight: 400;
+\`;
+const Left = styled(Item)(({
+  icon
+}) => \`
+  flex: 0 0 30%;
+  padding-left: 0.15rem;
+  \${icon ? \`background-position: 0.09rem center;
+     background-repeat: no-repeat;
+     background-size: 0.09rem 0.15rem;
+     padding-left: 0.25rem;
+  \` : ''}
+\`);
 export const Foo = (function () {})\`
 foo
 \`;
@@ -281,6 +300,25 @@ export const BinaryAndLogicExpression = styled.button\`
   padding: \${40 + 50}px;
   line-height: \${calc() - 2}px;
 \`;
+const Item = styled.div\`
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 0.16rem;
+  font-weight: 400;
+\`;
+const Left = styled(Item)(({
+  icon
+}) => \`
+  flex: 0 0 30%;
+  padding-left: 0.15rem;
+  \${icon ? \`background-position: 0.09rem center;
+     background-repeat: no-repeat;
+     background-size: 0.09rem 0.15rem;
+     padding-left: 0.25rem;
+  \` : ''}
+\`);
 export const Foo = (function () {})\`
 foo
 \`;

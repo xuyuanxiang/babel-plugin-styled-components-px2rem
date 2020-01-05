@@ -136,6 +136,30 @@ export const BinaryAndLogicExpression = styled.button`
   line-height: ${calc() - 2}px;
 `;
 
+const Item = styled.div`
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 400;
+`;
+
+const Left = styled(Item)(
+  ({ icon }) => `
+  flex: 0 0 30%;
+  padding-left: 15px;
+  ${
+    icon
+      ? `background-position: 9px center;
+     background-repeat: no-repeat;
+     background-size: 9px 15px;
+     padding-left: 25px;
+  `
+      : ''
+  }
+`,
+);
 
 export const Foo = (function() {})`
 foo
