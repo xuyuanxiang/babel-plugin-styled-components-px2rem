@@ -55,11 +55,7 @@ function isStyledTagged(tagged: TaggedTemplateExpression) {
   } else if (isMemberExpression(tag)) {
     return isStyledMember(tag);
   } else if (isCallExpression(tag)) {
-    if (isIdentifier(tag.callee)) {
-      return isStyled(tag.callee);
-    } else if (isMemberExpression(tag.callee)) {
-      return isStyledMember(tag.callee);
-    }
+    return isStyledFunction(tag);
   }
   return false;
 }

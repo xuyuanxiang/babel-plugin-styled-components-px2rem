@@ -61,7 +61,7 @@ or `.babelrc`:
 
 ## Composition
 
-It should put before [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components#readme)
+It should be put before [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components#readme)
 
 ```json
 {
@@ -95,7 +95,7 @@ const fixedVal = toFixed((pixels * multiplier) / rootValue, unitPrecision);
 return `${fixedVal}rem`;
 ```
 
-Remaining options ara consistent with [postcss-plugin-px2rem](https://github.com/pigcan/postcss-plugin-px2rem#readme).
+Remaining options are consistent with [postcss-plugin-px2rem](https://github.com/pigcan/postcss-plugin-px2rem#readme).
 
 ## Transform Runtime
 
