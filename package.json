@@ -21,7 +21,9 @@
   "types": "lib/index.d.ts",
   "typings": "lib/index.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "src",
+    "types"
   ],
   "directories": {
     "lib": "lib",

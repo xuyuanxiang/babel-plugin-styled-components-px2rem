@@ -25,4 +25,4 @@ deploy:
 scripts:
   - npm install codecov -g
 after_success:
-  - codecov --token=6ad92e38-4445-4b06-b647-035a663ef4e3
+  - codecov --token=6ad92e38-4445-4b06-b647-035a663ef4e3 -f coverage/*.json
