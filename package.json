@@ -46,7 +46,6 @@
     "@babel/types": "^7.7.4",
     "@types/jest": "^24.0.25",
     "@types/node": "^10.13.0",
-    "coveralls": "^3.0.9",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
     "lint-staged": "^9.5.0",
@@ -62,7 +61,6 @@
     "test": "jest --no-cache --coverage",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "build": "tsc -p .",
-    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "watch": "tsc -w -p ."
   },
   "husky": {
