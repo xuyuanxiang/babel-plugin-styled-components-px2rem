@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should match snapshot 1`] = `
+"function px2rem(input, ...args) {
+  if (typeof input === 'function') return px2rem(input(...args), ...args);
+  var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;
+  var pixels = Number.isNaN(value) ? 0 : value;
+  if (Math.abs(pixels) < 0) return pixels + 'px';
+  var mul = Math.pow(10, 5 + 1);
+  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
+}"
+`;

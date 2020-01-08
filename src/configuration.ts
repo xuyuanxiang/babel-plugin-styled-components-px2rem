@@ -1,24 +1,24 @@
 export interface IConfiguration {
-  rootValue: number;
-  unitPrecision: number;
-  minPixelValue: number;
-  multiplier: number;
-  tags: ReadonlyArray<string>;
-  propWhiteList: ReadonlyArray<string>;
-  propBlackList: ReadonlyArray<string>;
-  exclude: boolean;
-  selectorBlackList: ReadonlyArray<string>;
-  ignoreIdentifier: boolean;
-  replace: boolean;
-  mediaQuery: boolean;
-  transformRuntime: boolean;
+  readonly rootValue: number;
+  readonly unitPrecision: number;
+  readonly minPixelValue: number;
+  readonly multiplier: number;
+  readonly tags: ReadonlyArray<string>;
+  readonly propWhiteList: ReadonlyArray<string>;
+  readonly propBlackList: ReadonlyArray<string>;
+  readonly exclude: boolean;
+  readonly selectorBlackList: ReadonlyArray<string>;
+  readonly ignoreIdentifier: boolean;
+  readonly replace: boolean;
+  readonly mediaQuery: boolean;
+  readonly transformRuntime: boolean;
 }
 
 export class ConfigurationManager {
   private static readonly defaultConfiguration: IConfiguration = {
     rootValue: 100,
     unitPrecision: 5,
-    minPixelValue: 2,
+    minPixelValue: 0,
     multiplier: 1,
     tags: ['styled', 'css', 'createGlobalStyle', 'keyframes'],
     propWhiteList: [],

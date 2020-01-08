@@ -65,7 +65,7 @@ function getHeight() {
   return height / 2;
 }
 const mixins = css`
-  padding: 0 16px;
+  padding: -1px 16px;
   margin: 16px 32px 16px 32px;
 `;
 export const GlobalStyle = createGlobalStyle`
@@ -100,9 +100,15 @@ export const ThemeConsumer = styled.div`
   color: ${props => props.theme.color};
 `;
 
-export const ConditionalExpression = function({ fontSize } = {}) {
+export const ConditionalExpression = function({ fontSize, spacing } = {}) {
   const StyledButton = styled.button`
     font-size: ${typeof fontSize === 'number' ? fontSize : props => props.theme.fontSize}px;
+    ${spacing
+      ? `
+     padding: 8px 16px 0 32px;
+     margin: 16px 0;
+  `
+      : ''}
   `;
 
   return <StyledButton />;
@@ -135,20 +141,3 @@ export const BinaryAndLogicExpression = styled.button`
   padding: ${40 + 50}px;
   line-height: ${calc() - 2}px;
 `;
-
-export const ConditaionalExpression = styled.div(
-  props => `
-  flex: 0 0 30%;
-  padding-left: 15px;
-  ${
-    props.icon
-      ? `
-     background-position: 9px center;
-     background-repeat: no-repeat;
-     background-size: 9px 15px;
-     padding-left: 25px;
-  `
-      : ''
-  }
-`,
-);

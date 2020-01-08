@@ -40,7 +40,7 @@ module.exports = {
   plugins: [
     [
       'styled-components-px2rem',
-      { rootValue: 100, unitPrecision: 5, minPixelValue: 2, multiplier: 1, transformRuntime: false },
+      { rootValue: 100, unitPrecision: 5, minPixelValue: 0, multiplier: 1, transformRuntime: false },
     ],
   ],
 };
@@ -53,7 +53,7 @@ or `.babelrc`:
   "plugins": [
     [
       "styled-components-px2rem",
-      { "rootValue": 100, "unitPrecision": 5, "minPixelValue": 2, "multiplier": 1, "transformRuntime": false }
+      { "rootValue": 100, "unitPrecision": 5, "minPixelValue": 0, "multiplier": 1, "transformRuntime": false }
     ]
   ]
 }
@@ -75,7 +75,7 @@ It should be put before [babel-plugin-styled-components](https://github.com/styl
 | :-- | :-: | :-: | :-- | --: |
 | rootValue | number | false | 100 | The root element font size |
 | unitPrecision | number | false | 5 | The decimal numbers to allow the REM units to grow to |
-| minPixelValue | number | false | 2 | Set the minimum pixel value to replace |
+| minPixelValue | number | false | 0 | Set the minimum pixel value to replace |
 | multiplier | number | false | 1 | The multiplier of input value |
 | tags | string[] | false | ["styled", "css", "createGlobalStyle", "keyframes"] | [styled-components](https://www.styled-components.com/) template literal [tagged](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) |
 | transformRuntime | boolean | false | false | since 1.1.0，enable transformation of all expressions that embedded in template strings |
@@ -86,7 +86,7 @@ Simple version of the formula：
 const input = '32px'; // the value in css text
 const pixels = parseFloat(input);
 
-if (pixels < minPixelValue) {
+if (Math.abs(pixels) < minPixelValue) {
   return input;
 }
 
@@ -130,16 +130,12 @@ export const FunctionExpression = styled.button`
 `;
 
 function _px2rem(input, ...args) {
-  if (typeof input === 'function') return _px2rem(input(...args));
+  if (typeof input === 'function') return _px2rem(input(...args), ...args);
   var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;
   var pixels = Number.isNaN(value) ? 0 : value;
-
-  if (pixels < 2) {
-    return `${pixels}px`;
-  }
-
+  if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return `${(Math.round(Math.floor(((pixels * 1) / 100) * mul) / 10) * 10) / mul}rem`;
+  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
 }
 ```
 
@@ -166,6 +162,7 @@ export const ArrowFunction = styled.input.attrs(props => ({
   margin: ${() => 32}px; /* NumericLiteral Body */
   padding: ${props => props.size};
 `;
+
 export const ArrowFunctionWithBlockBody = styled.button`
   width: ${props => {
     if (props.width) {
@@ -177,6 +174,7 @@ export const ArrowFunctionWithBlockBody = styled.button`
 
   ${props => (props.disabled ? 'height: 400px' : 'height: 200px')};
 `;
+
 export const ArrowFunctionWithBinaryBody = styled.button`
   ${props =>
     props.disabled &&
@@ -187,6 +185,7 @@ export const ArrowFunctionWithBinaryBody = styled.button`
   height: ${props => !props.disabled && props.height}px; /* LogicalExpression Body */
   width: ${() => 44 + 50}px; /* BinaryExpression Body */
 `;
+
 export const ArrowFunctionWithConditionalBody = styled.button`
   height: ${props => (props.height ? height : 100)}px; /* ConditionalExpression Body */
 `;
@@ -213,6 +212,7 @@ export const ArrowFunction = styled.input.attrs(props => ({
   margin: ${() => _px2rem(32)}; /* NumericLiteral Body */
   padding: ${props => props.size};
 `;
+
 export const ArrowFunctionWithBlockBody = styled.button`
   width: ${props =>
     _px2rem(() => {
@@ -225,6 +225,7 @@ export const ArrowFunctionWithBlockBody = styled.button`
 
   ${props => (props.disabled ? 'height: 4rem' : 'height: 2rem')};
 `;
+
 export const ArrowFunctionWithBinaryBody = styled.button`
   ${props =>
     props.disabled &&
@@ -235,22 +236,19 @@ export const ArrowFunctionWithBinaryBody = styled.button`
   height: ${props => _px2rem(!props.disabled && props.height)}; /* ArrowFunction with a LogicalExpression Body */
   width: ${() => _px2rem(44 + 50)}; /* ArrowFunction with a BinaryExpression Body */
 `;
+
 export const ArrowFunctionWithConditionalBody = styled.button`
   height: ${props =>
     props.height ? _px2rem(height) : _px2rem(100)}; /* ArrowFunction with a ConditionalExpression Body */
 `;
 
 function _px2rem(input, ...args) {
-  if (typeof input === 'function') return _px2rem(input(...args));
+  if (typeof input === 'function') return _px2rem(input(...args), ...args);
   var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;
   var pixels = Number.isNaN(value) ? 0 : value;
-
-  if (pixels < 2) {
-    return `${pixels}px`;
-  }
-
+  if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return `${(Math.round(Math.floor(((pixels * 1) / 100) * mul) / 10) * 10) / mul}rem`;
+  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
 }
 ```
 
@@ -285,16 +283,12 @@ export const MemberExpression = styled.button(props => `
 `);
 
 function _px2rem(input, ...args) {
-  if (typeof input === 'function') return _px2rem(input(...args));
+  if (typeof input === 'function') return _px2rem(input(...args), ...args);
   var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;
   var pixels = Number.isNaN(value) ? 0 : value;
-
-  if (pixels < 2) {
-    return `${pixels}px`;
-  }
-
+  if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return `${(Math.round(Math.floor(((pixels * 1) / 100) * mul) / 10) * 10) / mul}rem`;
+  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
 }
 ```
 
@@ -361,16 +355,12 @@ export const ConditionalExpressionWhenFalse = function ({
 };
 
 function _px2rem(input, ...args) {
-  if (typeof input === 'function') return _px2rem(input(...args));
+  if (typeof input === 'function') return _px2rem(input(...args), ...args);
   var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;
   var pixels = Number.isNaN(value) ? 0 : value;
-
-  if (pixels < 2) {
-    return `${pixels}px`;
-  }
-
+  if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return `${(Math.round(Math.floor(((pixels * 1) / 100) * mul) / 10) * 10) / mul}rem`;
+  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
 }
 ```
 
@@ -458,15 +448,11 @@ export const BinaryAndLogicExpression = styled.button`
 `;
 
 function _px2rem(input, ...args) {
-  if (typeof input === 'function') return _px2rem(input(...args));
+  if (typeof input === 'function') return _px2rem(input(...args), ...args);
   var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;
   var pixels = Number.isNaN(value) ? 0 : value;
-
-  if (pixels < 2) {
-    return `${pixels}px`;
-  }
-
+  if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return `${Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul}rem`;
+  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
 }
 ```

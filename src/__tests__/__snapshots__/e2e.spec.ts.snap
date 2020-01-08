@@ -25,7 +25,7 @@ export const ArrowFunction = styled.input.attrs(props => ({
 }))\`
   color: palevioletred;
   font-size: 0.14rem;
-  border: 1px solid palevioletred;
+  border: 0.01rem solid palevioletred;
   border-radius: 0.08rem;
   width: \${props => _px2rem(props.width)}; /* PropertyAccess Body */
   height: \${() => _px2rem(height)}; /* Identifier Body */
@@ -149,24 +149,27 @@ const Left = styled(Item)(({
      padding-left: 0.25rem;
   \` : ''}
 \`);
-export const Foo = (function () {})\`
+const Foo = (function () {})\`
 foo
 \`;
 const Bar = [''][0]\`
  bar
 \`;
+const ArrayExpressionCallee = [styled](props => \`
+  color: palevioletred;
+  font-size: 14px;
+  border: 1px solid palevioletred;
+  border-radius: 8px;
+  width: \${props.width}px;
+\`);
 
 function _px2rem(input, ...args) {
-  if (typeof input === 'function') return _px2rem(input(...args));
+  if (typeof input === 'function') return _px2rem(input(...args), ...args);
   var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;
   var pixels = Number.isNaN(value) ? 0 : value;
-
-  if (pixels < 2) {
-    return \`\${pixels}px\`;
-  }
-
+  if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return \`\${Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul}rem\`;
+  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
 }"
 `;
 
@@ -195,7 +198,7 @@ export const ArrowFunction = styled.input.attrs(props => ({
 }))\`
   color: palevioletred;
   font-size: 0.14rem;
-  border: 1px solid palevioletred;
+  border: 0.01rem solid palevioletred;
   border-radius: 0.08rem;
   width: \${props => props.width}px; /* PropertyAccess Body */
   height: \${() => height}px; /* Identifier Body */
@@ -319,10 +322,17 @@ const Left = styled(Item)(({
      padding-left: 0.25rem;
   \` : ''}
 \`);
-export const Foo = (function () {})\`
+const Foo = (function () {})\`
 foo
 \`;
 const Bar = [''][0]\`
  bar
-\`;"
+\`;
+const ArrayExpressionCallee = [styled](props => \`
+  color: palevioletred;
+  font-size: 14px;
+  border: 1px solid palevioletred;
+  border-radius: 8px;
+  width: \${props.width}px;
+\`);"
 `;

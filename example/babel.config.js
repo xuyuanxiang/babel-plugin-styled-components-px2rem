@@ -3,7 +3,7 @@ module.exports = {
   plugins: [
     [
       'styled-components-px2rem',
-      { rootValue: 100, unitPrecision: 5, minPixelValue: 2, multiplier: 1, transformRuntime: true },
+      { rootValue: 100, unitPrecision: 5, minPixelValue: 0, multiplier: 1, transformRuntime: true },
     ],
   ],
   env: {

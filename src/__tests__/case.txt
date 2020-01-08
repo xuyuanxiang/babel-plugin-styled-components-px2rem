@@ -161,10 +161,18 @@ const Left = styled(Item)(
 `,
 );
 
-export const Foo = (function() {})`
+const Foo = (function() {})`
 foo
 `;
 
 const Bar  = [''][0]`
  bar
 `;
+
+const ArrayExpressionCallee = [styled](props => `
+  color: palevioletred;
+  font-size: 14px;
+  border: 1px solid palevioletred;
+  border-radius: 8px;
+  width: ${props.width}px;
+`);

@@ -175,43 +175,22 @@ export default declare((api: ConfigAPI, options?: IConfiguration) => {
 
   const templateVisitor: Visitor = {
     TemplateElement(path: NodePath<TemplateElement>) {
-      try {
-        const it = path.node;
-        if (it.value && it.value.raw) {
-          it.value.raw = replace(it.value.raw);
-        }
-        if (it.value && it.value.cooked) {
-          it.value.cooked = replace(it.value.cooked);
-        }
-      } catch (e) {
-        throw path.buildCodeFrameError(
-          'Whoops! An unexpected Error occurred, please visit: https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem/issues  to commit a issue.',
-          e,
-        );
+      const it = path.node;
+      if (it.value && it.value.raw) {
+        it.value.raw = replace(it.value.raw);
+      }
+      if (it.value && it.value.cooked) {
+        it.value.cooked = replace(it.value.cooked);
       }
     },
     StringLiteral(path: NodePath<StringLiteral>) {
-      try {
-        path.node.value = replace(path.node.value);
-      } catch (e) {
-        throw path.buildCodeFrameError(
-          'Whoops! An unexpected Error occurred, please visit: https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem/issues  to commit a issue.',
-          e,
-        );
-      }
+      path.node.value = replace(path.node.value);
     },
   };
 
   if (configuration.config.transformRuntime) {
     templateVisitor.TemplateLiteral = (path: NodePath<TemplateLiteral>) => {
-      try {
-        transform(path.node);
-      } catch (e) {
-        throw path.buildCodeFrameError(
-          'Whoops! An unexpected Error occurred, please visit: https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem/issues  to commit a issue.',
-          e,
-        );
-      }
+      transform(path.node);
     };
   }
 
