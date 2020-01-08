@@ -1,8 +1,7 @@
-import templateBuild from '@babel/template';
-import { identifier, numericLiteral } from '@babel/types';
+import { identifier } from '@babel/types';
 import generate from '@babel/generator';
 import { runInNewContext } from 'vm';
-import { px2rem as source } from '../template';
+import createPx2rem from '../createPx2rem';
 import configuration, { IConfiguration } from '../configuration';
 
 function px2rem(
@@ -15,30 +14,14 @@ function px2rem(
   }: Partial<IConfiguration> = configuration.config,
 ): string {
   const sandbox = { result: '' };
-  const template = templateBuild.expression(source);
-  const ast = template({
-    input: identifier('input'),
-    px2rem: identifier('px2rem'),
-    rootValue: numericLiteral(rootValue),
-    unitPrecision: numericLiteral(unitPrecision),
-    multiplier: numericLiteral(multiplier),
-    minPixelValue: numericLiteral(minPixelValue),
-  });
+  const ast = createPx2rem(identifier('px2rem'), { rootValue, unitPrecision, multiplier, minPixelValue });
   const code = generate(ast).code;
   runInNewContext(`${code} result = px2rem(${value});`, sandbox);
   return sandbox.result;
 }
 
 it('should match snapshot', function() {
-  const template = templateBuild.expression(source);
-  const ast = template({
-    input: identifier('input'),
-    px2rem: identifier('px2rem'),
-    rootValue: numericLiteral(configuration.config.rootValue),
-    unitPrecision: numericLiteral(configuration.config.unitPrecision),
-    multiplier: numericLiteral(configuration.config.multiplier),
-    minPixelValue: numericLiteral(configuration.config.minPixelValue),
-  });
+  const ast = createPx2rem(identifier('px2rem'), configuration.config);
   expect(generate(ast).code).toMatchSnapshot();
 });
 

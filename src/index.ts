@@ -16,7 +16,6 @@ import {
   isTemplateElement,
   callExpression,
   identifier,
-  numericLiteral,
   Program,
   isBlock,
   arrowFunctionExpression,
@@ -40,10 +39,9 @@ import {
   JSXNamespacedName,
   ArgumentPlaceholder,
 } from '@babel/types';
-import templateBuild from '@babel/template';
 import configuration, { IConfiguration } from './configuration';
 import { replace } from './replace';
-import { px2rem } from './template';
+import createPx2rem from './createPx2rem';
 
 let _px2rem: Identifier | undefined;
 let _used = false;
@@ -198,17 +196,7 @@ export default declare((api: ConfigAPI, options?: IConfiguration) => {
     Program: {
       exit(programPath: NodePath<Program>) {
         if (_used && _px2rem) {
-          const template = templateBuild.statement(px2rem);
-          programPath.node.body.push(
-            template({
-              input: identifier('input'),
-              px2rem: _px2rem,
-              rootValue: numericLiteral(configuration.config.rootValue),
-              unitPrecision: numericLiteral(configuration.config.unitPrecision),
-              multiplier: numericLiteral(configuration.config.multiplier),
-              minPixelValue: numericLiteral(configuration.config.minPixelValue),
-            }),
-          );
+          programPath.node.body.push(createPx2rem(_px2rem, configuration.config));
         }
       },
       enter(programPath: NodePath<Program>) {
