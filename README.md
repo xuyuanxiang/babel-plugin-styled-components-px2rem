@@ -24,7 +24,7 @@ TypeScript transformer with similar functionality：[typescript-styled-component
   * [ArrowFunctionExpression](#arrowfunctionexpression)
   * [MemberExpression](#memberexpression)
   * [ConditionalExpression](#conditionalexpression)
-  * [Other Expressions](#other-expressions)%
+  * [Other Expressions](#other-expressions)
 
 ## Requirement
 
