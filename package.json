@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-styled-components-px2rem",
-  "version": "1.4.5",
+  "version": "1.5.0",
   "description": "Babel plugin for convert px to rem units of styled-components",
   "keywords": [
     "px2rem",
@@ -31,21 +31,21 @@
     "example": "example/src"
   },
   "peerDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": ">= 7.0.0 < 7.8.0",
     "postcss": "^7.0.0"
   },
   "dependencies": {
-    "@babel/helper-plugin-utils": "^7.0.0",
-    "@babel/template": "^7.7.4",
+    "@babel/helper-plugin-utils": ">= 7.0.0 < 7.8.0",
     "memoizerific": "^1.11.3",
     "postcss-plugin-px2rem": "^0.8.1",
     "postcss-scss": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/preset-react": "^7.7.4",
-    "@babel/traverse": "^7.7.4",
-    "@babel/types": "^7.7.4",
+    "@babel/core": ">= 7.0.0 < 7.8.0",
+    "@babel/preset-react": ">= 7.0.0 < 7.8.0",
+    "@babel/template": ">= 7.0.0 < 7.8.0",
+    "@babel/traverse": ">= 7.0.0 < 7.8.0",
+    "@babel/types": ">= 7.0.0 < 7.8.0",
     "@types/jest": "^24.0.25",
     "@types/node": "^10.13.0",
     "husky": "^3.1.0",
