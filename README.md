@@ -277,7 +277,7 @@ export const MemberExpression = styled.button(
   props => `
   display: inline;
   width: ${props.width}px;
-  height: ${props.height};
+  height: ${props.height}; /* Note: Only expression end with 'px' will be processed. */
   font-size: 16px;
 `,
 );
@@ -292,7 +292,7 @@ import styled from 'styled-components';
 export const MemberExpression = styled.button(props => `
   display: inline;
   width: ${_px2rem(props.width)};
-  height: ${props.height};
+  height: ${props.height}; /* Note: Only expression end with 'px' will be processed. */
   font-size: 0.16rem;
 `);
 
@@ -416,7 +416,7 @@ export const BinaryAndLogicExpression = styled.button`
     width: 200px;
   `};
   height: ${condition || 100}px; /* LogicExpression */
-  padding: ${40 + 50}px; /* BinaryExpression */
+  padding: ${40 + 50}px 8px ${4}px 16px; /* BinaryExpression */
   line-height: ${calc() - 2}px; /* BinaryExpression */
 `;
 ```
@@ -457,7 +457,7 @@ export const BinaryAndLogicExpression = styled.button`
     width: 2rem;
   `};
   height: ${_px2rem(condition || 100)};
-  padding: ${_px2rem(40 + 50)};
+  padding: ${_px2rem(40 + 50)} 0.08rem ${_px2rem(4)} 0.16rem;
   line-height: ${_px2rem(calc() - 2)};
 `;
 
