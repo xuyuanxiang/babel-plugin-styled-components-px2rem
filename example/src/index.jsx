@@ -138,6 +138,6 @@ export const BinaryAndLogicExpression = styled.button`
     width: 200px;
   `};
   height: ${condition || 100}px;
-  padding: ${40 + 50}px;
+  padding: ${40 + 50}px 18px ${'4'}px 12px;
   line-height: ${calc() - 2}px;
 `;

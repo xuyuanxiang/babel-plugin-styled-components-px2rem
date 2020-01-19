@@ -21,7 +21,7 @@
     "@babel/preset-env": "^7.7.4",
     "@babel/preset-react": "^7.7.4",
     "babel-jest": "^24.9.0",
-    "babel-plugin-styled-components-px2rem": "^1.5.1",
+    "babel-plugin-styled-components-px2rem": "^1.5.3",
     "cross-env": "^6.0.3",
     "jest": "^24.9.0",
     "postcss": "^7.0.26"

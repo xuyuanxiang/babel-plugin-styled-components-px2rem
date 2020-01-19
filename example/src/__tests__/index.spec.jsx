@@ -78,7 +78,7 @@ it('should transform <ArrowFunction/>', function() {
     expect(style.border).toBe('0.01rem solid palevioletred');
     expect(style.borderRadius).toBe('0.08rem');
     expect(style.width).toBe('3.2rem');
-    expect(style.padding).toBe('16px');
+    expect(style.padding).toBe('0.16rem');
     expect(style.margin).toBe('0.32rem');
     expect(style.lineHeight).toBe('0.44rem');
     expect(style.height).toBe('0.44rem');
@@ -232,7 +232,7 @@ it('should transform <BinaryExpression/>', function() {
     const style = getComputedStyle(consumer);
     expect(style.width).toBe('2rem');
     expect(style.height).toBe('1rem');
-    expect(style.padding).toBe('0.9rem');
+    expect(style.padding).toBe('0.9rem 0.18rem 0.04rem 0.12rem');
     expect(style.lineHeight).toBe('0.18rem');
   } else {
     throw new Error('BinaryExpression should be render');
