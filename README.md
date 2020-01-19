@@ -213,7 +213,7 @@ import styled from 'styled-components';
 const height = '44';
 export const ArrowFunction = styled.input.attrs(props => ({
   type: 'password',
-  size: props.size || '16px',
+  size: props.size || '0.16rem',
   width: props.width || 100,
 }))`
   color: palevioletred;
