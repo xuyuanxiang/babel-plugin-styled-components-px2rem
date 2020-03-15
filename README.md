@@ -1,4 +1,4 @@
-# babel-plugin-styled-components-px2rem
+# babel-plugin-styled-components-px2rem [![MIT](https://img.shields.io/github/license/xuyuanxiang/babel-plugin-styled-components-px2rem?style=plastic)](https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem/blob/master/LICENSE)
 
 [![npm version](https://img.shields.io/npm/v/babel-plugin-styled-components-px2rem.svg?style=flat-square)](https://www.npmjs.com/package/babel-plugin-styled-components-px2rem) 
 [![Build Status](https://api.travis-ci.org/xuyuanxiang/babel-plugin-styled-components-px2rem.svg)](https://travis-ci.org/xuyuanxiang/babel-plugin-styled-components-px2rem) 
