@@ -1,8 +1,6 @@
 # babel-plugin-styled-components-px2rem [![MIT](https://img.shields.io/github/license/xuyuanxiang/babel-plugin-styled-components-px2rem?style=plastic)](https://github.com/xuyuanxiang/babel-plugin-styled-components-px2rem/blob/master/LICENSE)
 
-[![npm version](https://img.shields.io/npm/v/babel-plugin-styled-components-px2rem.svg?style=flat-square)](https://www.npmjs.com/package/babel-plugin-styled-components-px2rem) 
-[![Build Status](https://api.travis-ci.org/xuyuanxiang/babel-plugin-styled-components-px2rem.svg)](https://travis-ci.org/xuyuanxiang/babel-plugin-styled-components-px2rem) 
-[![codecov](https://codecov.io/gh/xuyuanxiang/babel-plugin-styled-components-px2rem/branch/master/graph/badge.svg)](https://codecov.io/gh/xuyuanxiang/babel-plugin-styled-components-px2rem)
+[![npm version](https://img.shields.io/npm/v/babel-plugin-styled-components-px2rem.svg?style=flat-square)](https://www.npmjs.com/package/babel-plugin-styled-components-px2rem) [![Build Status](https://api.travis-ci.org/xuyuanxiang/babel-plugin-styled-components-px2rem.svg)](https://travis-ci.org/xuyuanxiang/babel-plugin-styled-components-px2rem) [![codecov](https://codecov.io/gh/xuyuanxiang/babel-plugin-styled-components-px2rem/branch/master/graph/badge.svg)](https://codecov.io/gh/xuyuanxiang/babel-plugin-styled-components-px2rem)
 
 [Babel](https://babeljs.io/) plugin for convert `px` to `rem` units of [styled-components](https://www.styled-components.com/)
 
@@ -20,11 +18,12 @@ TypeScript transformer with similar functionality：[typescript-styled-component
 - [Composition](#composition)
 - [Options](#options)
 - [Transform Runtime](#transform-runtime)
-  * [FunctionExpression](#functionexpression)
-  * [ArrowFunctionExpression](#arrowfunctionexpression)
-  * [MemberExpression](#memberexpression)
-  * [ConditionalExpression](#conditionalexpression)
-  * [Other Expressions](#other-expressions)
+  - [FunctionExpression](#functionexpression)
+  - [ArrowFunctionExpression](#arrowfunctionexpression)
+  - [MemberExpression](#memberexpression)
+  - [ConditionalExpression](#conditionalexpression)
+  - [Other Expressions](#other-expressions)
+- [Polyfill](#Polyfill)
 
 ## Requirement
 
@@ -149,7 +148,7 @@ function _px2rem(input, ...args) {
   var pixels = Number.isNaN(value) ? 0 : value;
   if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
+  return (Math.round(Math.floor(((pixels * 1) / 100) * mul) / 10) * 10) / mul + 'rem';
 }
 ```
 
@@ -262,7 +261,7 @@ function _px2rem(input, ...args) {
   var pixels = Number.isNaN(value) ? 0 : value;
   if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
+  return (Math.round(Math.floor(((pixels * 1) / 100) * mul) / 10) * 10) / mul + 'rem';
 }
 ```
 
@@ -281,7 +280,6 @@ export const MemberExpression = styled.button(
   font-size: 16px;
 `,
 );
-
 ```
 
 compiled:
@@ -289,12 +287,14 @@ compiled:
 ```javascript
 import styled from 'styled-components';
 
-export const MemberExpression = styled.button(props => `
+export const MemberExpression = styled.button(
+  props => `
   display: inline;
   width: ${_px2rem(props.width)};
   height: ${props.height}; /* Note: Only expression end with 'px' will be processed. */
   font-size: 0.16rem;
-`);
+`,
+);
 
 function _px2rem(input, ...args) {
   if (typeof input === 'function') return _px2rem(input(...args), ...args);
@@ -302,7 +302,7 @@ function _px2rem(input, ...args) {
   var pixels = Number.isNaN(value) ? 0 : value;
   if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
+  return (Math.round(Math.floor(((pixels * 1) / 100) * mul) / 10) * 10) / mul + 'rem';
 }
 ```
 
@@ -343,25 +343,19 @@ compiled:
 import React from 'react';
 import styled from 'styled-components';
 
-export const ConditionalExpression = function ({
-  fontSize
-} = {}) {
+export const ConditionalExpression = function({ fontSize } = {}) {
   const StyledButton = styled.button`
     font-size: ${typeof fontSize === 'number' ? _px2rem(fontSize) : props => _px2rem(props.theme.fontSize)};
   `;
   return React.createElement(StyledButton, null);
 };
-export const ConditionalExpressionWhenTrue = function ({
-  fontSize
-} = {}) {
+export const ConditionalExpressionWhenTrue = function({ fontSize } = {}) {
   const StyledButton = styled.button`
     font-size: ${typeof fontSize !== 'number' ? props => _px2rem(props.theme.fontSize) : _px2rem(fontSize)};
   `;
   return React.createElement(StyledButton, null);
 };
-export const ConditionalExpressionWhenFalse = function ({
-  fontSize
-} = {}) {
+export const ConditionalExpressionWhenFalse = function({ fontSize } = {}) {
   const StyledButton = styled.button`
     font-size: ${typeof fontSize === 'number' ? _px2rem(fontSize) : _px2rem(16)};
   `;
@@ -374,7 +368,7 @@ function _px2rem(input, ...args) {
   var pixels = Number.isNaN(value) ? 0 : value;
   if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
+  return (Math.round(Math.floor(((pixels * 1) / 100) * mul) / 10) * 10) / mul + 'rem';
 }
 ```
 
@@ -412,7 +406,7 @@ function calc() {
 }
 export const BinaryAndLogicExpression = styled.button`
   ${condition ||
-`
+    `
     width: 200px;
   `};
   height: ${condition || 100}px; /* LogicExpression */
@@ -453,7 +447,8 @@ function calc() {
 }
 
 export const BinaryAndLogicExpression = styled.button`
-  ${condition || `
+  ${condition ||
+    `
     width: 2rem;
   `};
   height: ${_px2rem(condition || 100)};
@@ -467,6 +462,39 @@ function _px2rem(input, ...args) {
   var pixels = Number.isNaN(value) ? 0 : value;
   if (Math.abs(pixels) < 0) return pixels + 'px';
   var mul = Math.pow(10, 5 + 1);
-  return Math.round(Math.floor(pixels * 1 / 100 * mul) / 10) * 10 / mul + 'rem';
+  return (Math.round(Math.floor(((pixels * 1) / 100) * mul) / 10) * 10) / mul + 'rem';
 }
+```
+
+# Polyfill
+
+Maybe you need import some polyfills from `core-js` to support outdated user agent like: `iOS 7.x`, `iOS 8.x` and `android 4.x`:
+
+```javascript
+import 'core-js/es/number/is-nan';
+import 'core-js/es/parse-float';
+```
+
+babel.config.js:
+
+```javascript
+module.exports = {
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        useBuiltIns: 'usage',
+        corejs: 3,
+      },
+    ],
+    // ...
+  ],
+  plugins: [
+    [
+      'styled-components-px2rem',
+      { rootValue: 100, unitPrecision: 5, minPixelValue: 0, multiplier: 1, transformRuntime: true },
+    ],
+  ],
+  // ...
+};
 ```
