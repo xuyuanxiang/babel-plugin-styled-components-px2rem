@@ -468,7 +468,7 @@ function _px2rem(input, ...args) {
 
 # Polyfill
 
-Maybe you need import some polyfills from `core-js` only once in your entry file to support outdated user agent like: `iOS 7.x`, `iOS 8.x` and `android 4.x`:
+Maybe you need import some polyfills from `core-js` only once in your entry file to support outdated user agent like: `iOS 7.x`, `iOS 8.x` and `android 4.x`.
 
 ```javascript
 import 'core-js/es/number/is-nan';
