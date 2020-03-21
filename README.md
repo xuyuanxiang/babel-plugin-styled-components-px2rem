@@ -474,35 +474,3 @@ Maybe you need import some polyfills from `core-js` only once in your entry file
 import 'core-js/es/number/is-nan';
 import 'core-js/es/parse-float';
 ```
-
-babel.config.js:
-
-```javascript
-module.exports = {
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        useBuiltIns: 'usage',
-        corejs: 3,
-      },
-    ],
-    // ...
-  ],
-  plugins: [
-    [
-      'styled-components-px2rem',
-      { rootValue: 100, unitPrecision: 5, minPixelValue: 0, multiplier: 1, transformRuntime: true },
-    ],
-  ],
-  // ...
-};
-```
-
-package.json:
-
-```json
-{
-  "browserslist": ["ios >= 7", "android >= 4"]
-}
-```
