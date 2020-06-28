@@ -142,8 +142,6 @@ common/temp
 # NPM debug logs
 npm-debug.log.*
 shrinkwrap.yaml
-package-lock.json
-yarn.lock
 
 *.swp
 

@@ -98,7 +98,7 @@ export const ConditionalExpression = function ({
   const StyledButton = styled.button\`
     font-size: \${typeof fontSize === 'number' ? _px2rem(fontSize) : props => _px2rem(props.theme.fontSize)};
   \`;
-  return React.createElement(StyledButton, null);
+  return /*#__PURE__*/React.createElement(StyledButton, null);
 };
 export const ConditionalExpressionWhenTrue = function ({
   fontSize
@@ -106,7 +106,7 @@ export const ConditionalExpressionWhenTrue = function ({
   const StyledButton = styled.button\`
     font-size: \${typeof fontSize !== 'number' ? props => _px2rem(props.theme.fontSize) : _px2rem(fontSize)};
   \`;
-  return React.createElement(StyledButton, null);
+  return /*#__PURE__*/React.createElement(StyledButton, null);
 };
 export const ConditionalExpressionWhenFalse = function ({
   fontSize
@@ -114,7 +114,7 @@ export const ConditionalExpressionWhenFalse = function ({
   const StyledButton = styled.button\`
     font-size: \${typeof fontSize === 'number' ? _px2rem(fontSize) : _px2rem(16)};
   \`;
-  return React.createElement(StyledButton, null);
+  return /*#__PURE__*/React.createElement(StyledButton, null);
 };
 const condition = false;
 
@@ -149,7 +149,7 @@ const Left = styled(Item)(({
      padding-left: 0.25rem;
   \` : ''}
 \`);
-const Foo = (function () {})\`
+const Foo = function () {}\`
 foo
 \`;
 const Bar = [''][0]\`
@@ -271,7 +271,7 @@ export const ConditionalExpression = function ({
   const StyledButton = styled.button\`
     font-size: \${typeof fontSize === 'number' ? fontSize : props => props.theme.fontSize}px;
   \`;
-  return React.createElement(StyledButton, null);
+  return /*#__PURE__*/React.createElement(StyledButton, null);
 };
 export const ConditionalExpressionWhenTrue = function ({
   fontSize
@@ -279,7 +279,7 @@ export const ConditionalExpressionWhenTrue = function ({
   const StyledButton = styled.button\`
     font-size: \${typeof fontSize !== 'number' ? props => props.theme.fontSize : fontSize}px;
   \`;
-  return React.createElement(StyledButton, null);
+  return /*#__PURE__*/React.createElement(StyledButton, null);
 };
 export const ConditionalExpressionWhenFalse = function ({
   fontSize
@@ -287,7 +287,7 @@ export const ConditionalExpressionWhenFalse = function ({
   const StyledButton = styled.button\`
     font-size: \${typeof fontSize === 'number' ? fontSize : 16}px;
   \`;
-  return React.createElement(StyledButton, null);
+  return /*#__PURE__*/React.createElement(StyledButton, null);
 };
 const condition = false;
 
@@ -322,7 +322,7 @@ const Left = styled(Item)(({
      padding-left: 0.25rem;
   \` : ''}
 \`);
-const Foo = (function () {})\`
+const Foo = function () {}\`
 foo
 \`;
 const Bar = [''][0]\`
