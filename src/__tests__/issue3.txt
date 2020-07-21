@@ -1,0 +1,45 @@
+const layout1 = styled.div`
+  & {
+    position: relative;
+  }
+
+  & {
+    footer {
+      height: 80px;
+      background: green;
+    }
+
+    header {
+      height: 45px;
+      background: yellow;
+    }
+  }
+`
+
+const layout2 = styled.div`
+  & {
+    position: relative;
+  }
+
+  & footer {
+    height: 80px;
+    background: green;
+  }
+
+  & header {
+    height: 45px;
+    background: yellow;
+  }
+`
+
+const layout3 = styled.div`
+  & footer {
+    height: 80px;
+    background: green;
+  }
+
+  & header {
+    height: 45px;
+    background: yellow;
+  }
+`

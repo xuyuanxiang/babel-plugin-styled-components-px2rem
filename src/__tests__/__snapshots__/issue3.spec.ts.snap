@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`issue#3 should support multi-level code blocks 1`] = `
+"const layout1 = styled.div\`
+  & {
+    position: relative;
+  }
+
+  & {
+    footer {
+      height: 0.8rem;
+      background: green;
+    }
+
+    header {
+      height: 0.45rem;
+      background: yellow;
+    }
+  }
+\`;
+const layout2 = styled.div\`
+  & {
+    position: relative;
+  }
+
+  & footer {
+    height: 0.8rem;
+    background: green;
+  }
+
+  & header {
+    height: 0.45rem;
+    background: yellow;
+  }
+\`;
+const layout3 = styled.div\`
+  & footer {
+    height: 0.8rem;
+    background: green;
+  }
+
+  & header {
+    height: 0.45rem;
+    background: yellow;
+  }
+\`;"
+`;

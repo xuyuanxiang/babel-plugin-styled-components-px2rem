@@ -18,4 +18,87 @@ describe('replace()', () => {
       'px; /* Identifier */\n width: 10.24rem;\n height: ',
     );
   });
+  it('should support multi-level code blocks', () => {
+    expect(
+      replace(`
+  & {
+    footer {
+      height: 80px;
+      background: green;
+    }
+
+    header {
+      height: 45px;
+      background: yellow;
+    }
+  }`),
+    ).toBe(`
+  & {
+    footer {
+      height: 0.8rem;
+      background: green;
+    }
+
+    header {
+      height: 0.45rem;
+      background: yellow;
+    }
+  }`);
+
+    expect(
+      replace(`
+  & {
+    position: relative;
+  }
+
+  & {
+    footer {
+      height: 80px;
+      background: green;
+    }
+
+    header {
+      height: 45px;
+      background: yellow;
+    }
+  }`),
+    ).toBe(`
+  & {
+    position: relative;
+  }
+
+  & {
+    footer {
+      height: 0.8rem;
+      background: green;
+    }
+
+    header {
+      height: 0.45rem;
+      background: yellow;
+    }
+  }`);
+
+    expect(
+      replace(`
+  & footer {
+    height: 80px;
+    background: green;
+  }
+
+  & header {
+    height: 45px;
+    background: yellow;
+  }`),
+    ).toBe(`
+  & footer {
+    height: 0.8rem;
+    background: green;
+  }
+
+  & header {
+    height: 0.45rem;
+    background: yellow;
+  }`);
+  });
 });

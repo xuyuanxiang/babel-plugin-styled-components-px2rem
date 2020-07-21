@@ -1,5 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`e2e should support multi-level code blocks 1`] = `
+"const layout1 = styled.div\`
+  & {
+    position: relative;
+  }
+
+  & {
+    footer {
+      height: 0.8rem;
+      background: green;
+    }
+
+    header {
+      height: 0.45rem;
+      background: yellow;
+    }
+  }
+\`;
+const layout2 = styled.div\`
+  & {
+    position: relative;
+  }
+
+  & footer {
+    height: 0.8rem;
+    background: green;
+  }
+
+  & header {
+    height: 0.45rem;
+    background: yellow;
+  }
+\`;
+const layout3 = styled.div\`
+  & footer {
+    height: 0.8rem;
+    background: green;
+  }
+
+  & header {
+    height: 0.45rem;
+    background: yellow;
+  }
+\`;"
+`;
+
 exports[`e2e should transform runtime 1`] = `
 "import React from 'react';
 import styled, { css, createGlobalStyle, keyframes } from 'styled-components';

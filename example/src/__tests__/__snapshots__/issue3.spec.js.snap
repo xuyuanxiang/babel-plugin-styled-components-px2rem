@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test 1 1`] = `
+"<head><style data-styled=\\"\\" data-styled-version=\\"4.4.1\\">
+/* sc-component-id: sc-bdVaJa */
+.fAlAGr{position:relative;} .fAlAGr footer{height:0.8rem;background:green;} .fAlAGr header{height:0.45rem;background:yellow;}</style></head><body><div><div id=\\"testId\\" class=\\"sc-bdVaJa fAlAGr\\"></div></div></body>"
+`;
+
+exports[`test 2 1`] = `
+"<head><style data-styled=\\"\\" data-styled-version=\\"4.4.1\\">
+/* sc-component-id: sc-bdVaJa */
+.fAlAGr{position:relative;} .fAlAGr footer{height:0.8rem;background:green;} .fAlAGr header{height:0.45rem;background:yellow;}
+/* sc-component-id: sc-bwzfXH */
+.mVqHc{position:relative;} .mVqHc footer{height:0.8rem;background:green;} .mVqHc header{height:0.45rem;background:yellow;}</style></head><body><div><div id=\\"testId\\" class=\\"sc-bwzfXH mVqHc\\"></div></div></body>"
+`;
+
+exports[`test 3 1`] = `
+"<head><style data-styled=\\"\\" data-styled-version=\\"4.4.1\\">
+/* sc-component-id: sc-bdVaJa */
+.fAlAGr{position:relative;} .fAlAGr footer{height:0.8rem;background:green;} .fAlAGr header{height:0.45rem;background:yellow;}
+/* sc-component-id: sc-bwzfXH */
+.mVqHc{position:relative;} .mVqHc footer{height:0.8rem;background:green;} .mVqHc header{height:0.45rem;background:yellow;}
+/* sc-component-id: sc-htpNat */
+.eDoltG footer{height:0.8rem;background:green;} .eDoltG header{height:0.45rem;background:yellow;}</style></head><body><div><div id=\\"testId\\" class=\\"sc-htpNat eDoltG\\"></div></div></body>"
+`;
