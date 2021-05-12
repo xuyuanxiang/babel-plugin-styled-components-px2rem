@@ -24,7 +24,7 @@
     "babel-plugin-styled-components-px2rem": "file:../",
     "cross-env": "^6.0.3",
     "jest": "^24.9.0",
-    "postcss": "^7.0.26"
+    "postcss": "^8.2.10"
   },
   "scripts": {
     "build": "babel src/index.jsx --out-dir dist/",
